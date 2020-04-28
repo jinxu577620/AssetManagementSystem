@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.mphigh.mapper.AcceptRequestMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.example.mphigh.entity.AcceptRequest">
+        <id column="rid" property="rid" />
+        <result column="aname" property="aname" />
+        <result column="acid" property="acid" />
+        <result column="num" property="num" />
+        <result column="price" property="price" />
+        <result column="annex" property="annex" />
+        <result column="supplier" property="supplier" />
+        <result column="evaluate" property="evaluate" />
+        <result column="astate" property="astate" />
+        <result column="pid" property="pid" />
+        <result column="manufacturer" property="manufacturer" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        rid, aname, acid, num, price, annex, supplier, evaluate, astate, pid, manufacturer
+    </sql>
+
+</mapper>

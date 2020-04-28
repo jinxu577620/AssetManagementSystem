@@ -1,0 +1,7 @@
+# DataSource Config
+    spring:
+        datasource:
+          driver-class-name: org.mariadb.jdbc.Driver
+          url: jdbc:mariadb://193.112.121.129:3306/test?serverTimezone=GMT%2b8&useUnicode=true&characterEncoding=utf-8
+          username: root
+          password: zsroot

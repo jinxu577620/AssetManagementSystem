@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.mphigh.mapper.CharacterMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.example.mphigh.entity.Character">
+        <id column="cid" property="cid" />
+        <result column="cname" property="cname" />
+        <result column="did" property="did" />
+        <result column="smauthority" property="smauthority" />
+        <result column="umauthority" property="umauthority" />
+        <result column="amauthority" property="amauthority" />
+        <result column="pauthority" property="pauthority" />
+        <result column="apauthority" property="apauthority" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        cid, cname, did, smauthority, umauthority, amauthority, pauthority, apauthority
+    </sql>
+
+</mapper>
