@@ -154,6 +154,10 @@ export default {
                     title: '资产管理',
                     subs: [
                         {
+                            index: '/getAssets',
+                            title: '查看资产'
+                        },
+                        {
                             index: '/pendingDeliverOrders',
                             title: '资产验收'
                         },

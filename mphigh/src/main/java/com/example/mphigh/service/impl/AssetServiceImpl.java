@@ -27,7 +27,7 @@ public class AssetServiceImpl extends ServiceImpl<AssetMapper, Asset> implements
     AssetMapper assetMapper;
     
     @Override
-    public Result showAll(Integer pageIndex,Integer pageSize) {
+    public Result getAssets(Integer pageIndex,Integer pageSize) {
         Page<Asset> page = new Page<>(pageIndex,pageSize);
         IPage<Asset> assetIPage = assetMapper.selectPage(page, new QueryWrapper<Asset>());
         return Result.success(assetIPage);

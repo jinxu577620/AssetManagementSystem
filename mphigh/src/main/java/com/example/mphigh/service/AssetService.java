@@ -13,5 +13,5 @@ import com.baomidou.mybatisplus.extension.service.IService;
  * @since 2020-04-26
  */
 public interface AssetService extends IService<Asset> {
-    Result showAll(Integer pageIndex,Integer pageSize);
+    Result getAssets(Integer pageIndex,Integer pageSize);
 }

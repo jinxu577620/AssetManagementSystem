@@ -63,6 +63,11 @@ const routes = [
                 component: () => import('../views/orders/ShippedOrders.vue'),
                 meta: { title: '已发货订单'}
             },
+            {
+                path: '/getAssets',
+                component: () => import('../views/orders/Assets.vue'),
+                meta: { title: '查看资产'}
+            },
 
             {
                 path: '/createCustomer',

@@ -53,7 +53,7 @@ const Orders_Apis = {
         method:"put",
         url:'/orders/deliver'
     },
-
+    
 }
 
 export default Orders_Apis

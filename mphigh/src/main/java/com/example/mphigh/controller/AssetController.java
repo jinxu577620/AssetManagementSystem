@@ -26,9 +26,10 @@ public class AssetController {
     
     @Autowired
     private AssetService assetService;
-    @PostMapping(value = "/showall")
-    public Result showAll(Integer pageIndex,Integer pageSize) {
-        return assetService.showAll(pageIndex,pageSize);
+    @PostMapping(value = "/getAssets")
+    public Result getAssets(Integer pageIndex,Integer pageSize) {
+        System.err.println("到controller了");
+        return assetService.getAssets(pageIndex,pageSize);
     }
 
 
