@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <link rel="icon" href="<%= BASE_URL %>favicon.ico">
+      <link rel="stylesheet" href="//at.alicdn.com/t/font_830376_qzecyukz0s.css">
+    <title>woodsong_pc</title>
+  </head>
+  <body>
+    <noscript>
+      <strong>We're sorry but woodsong_pc doesn't work properly without JavaScript enabled. Please enable it to continue.</strong>
+    </noscript>
+    <div id="app"></div>
+    <!-- built files will be auto injected -->
+
+    <script type="text/javascript">
+        function IEVersion() {
+            let userAgent = navigator.userAgent; //取得浏览器的userAgent字符串
+            let isIE = userAgent.indexOf("compatible") > -1 && userAgent.indexOf("MSIE") > -1; //判断是否IE<11浏览器
+            let isEdge = userAgent.indexOf("Edge") > -1 && !isIE; //判断是否IE的Edge浏览器
+            let isIE11 = userAgent.indexOf('Trident') > -1 && userAgent.indexOf("rv:11.0") > -1;
+
+            if(isIE) {
+                var reIE = new RegExp("MSIE (\\d+\\.\\d+);");
+                reIE.test(userAgent);
+                var fIEVersion = parseFloat(RegExp["$1"]);
+                if(fIEVersion === 7) {
+                    return 7;
+                } else if(fIEVersion === 8) {
+                    return 8;
+                } else if(fIEVersion === 9) {
+                    return 9;
+                } else if(fIEVersion === 10) {
+                    return 10;
+                } else {
+                    return 6;//IE版本<=7
+                }
+            } else if(isEdge) {
+                return 'edge';//edge
+            } else if(isIE11) {
+                return 11; //IE11
+            }else {
+                return -1;//不是ie浏览器
+            }
+        }
+        function openGoogle() {
+            let v = IEVersion();
+            if (v === -1 || v === 'edge' || v === 11) {
+                return false
+            }
+            let website = 'http://47.98.225.72/'; // 项目实际地址
+            // let website = 'http://192.168.3.6:8081/';  // 本地测试项目地址
+            try{
+                var osh = new ActiveXObject("WScript.Shell");
+                var p_app_path = osh.RegRead('HKEY_LOCAL_MACHINE\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\App Paths\\chrome.exe\\');
+                var oShell = new ActiveXObject("Shell.Application");
+                oShell.ShellExecute(p_app_path, website, "", "open", "1");
+                window.location.href = website+"index.html" // 服务器更目录放置的展示页面
+            } catch (e) {
+                window.location.href = website+"tips.html" // 服务器更目录放置的展示页面
+            }
+        }
+        // 调用则屏蔽ie11以下的内核浏览器访问
+        openGoogle()
+    </script>
+  </body>
+</html>
