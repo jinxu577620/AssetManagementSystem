@@ -91,9 +91,9 @@
                 <el-table-column prop="aname" label="名称" width="90" align="center"></el-table-column>
                 <el-table-column prop="acname" label="资产类别" width="90" align="center"></el-table-column>
                 <el-table-column prop="num" label="数量" width="90" align="center"></el-table-column>
-                <el-table-column prop="stime" label="入库时间" width="120" align="center"></el-table-column>
+                <el-table-column prop="stime" label="入库时间" width="100" align="center"></el-table-column>
                 <el-table-column prop="price" label="价格" align="center"></el-table-column>
-                <el-table-column prop="etime" label="报废时间" align="center"></el-table-column>
+                <el-table-column prop="etime" label="报废时间" width="100" align="center"></el-table-column>
                 <el-table-column prop="uid" label="所属用户" align="center"></el-table-column>
                 <el-table-column prop="department" label="所属部门" align="center"></el-table-column>
                 <el-table-column prop="annex" label="附件" align="center"></el-table-column>
@@ -160,7 +160,7 @@ export default {
     data() {
         return {
             query: {
-                //assetId: '',
+                assetId: '',
                 
                 //customerName: '',
                 //customerWangwang: '',
@@ -188,13 +188,22 @@ export default {
         this.getData();
     },
     methods: {
+        
         async getData() {
             this.$apis.getAssets(this.query).then(res =>{
                 this.tableData = res.data.records;
+                this.format(this.tableData);
                 this.pageTotal = res.data.total || 1;
             }).catch(err =>{
                 this.$message.error(err);
             });
+        },
+        // 格式化日期函数
+        format(records){
+            for(let record of records){
+                record.stime = moment(record.stime).format('YYYY-MM-DD');
+                record.etime = moment(record.etime).format('YYYY-MM-DD');
+            }
         },
         // 触发搜索按钮
         handleSearch() {
@@ -319,6 +328,6 @@ export default {
 }
 
 .table >>> .dangerous-row {
-    background: #fdb2b2;
+    background: #ffffff;
 }
 </style>
