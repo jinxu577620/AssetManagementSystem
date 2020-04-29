@@ -5,7 +5,11 @@ const User_Apis = {
         method:"post",
         url:'/user/login'
     },
-
+    //修改密码
+    updatePasswprd:{
+        method:"post",
+        url:'/user/updatePassword'
+    },
     // 获得用户
     getUsers:{
         method:"get",

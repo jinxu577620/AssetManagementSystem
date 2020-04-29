@@ -39,9 +39,9 @@
                         <i class="el-icon-caret-bottom"></i>
                     </span>
                     <el-dropdown-menu slot="dropdown">
-                            <el-dropdown-item>查看个人信息</el-dropdown-item>
-                            <el-dropdown-item command="">修改密码</el-dropdown-item>
-                        <el-dropdown-item divided command="logout">退出登录</el-dropdown-item>
+                        <el-dropdown-item command="a">查看个人信息</el-dropdown-item>
+                        <el-dropdown-item command="b">修改密码</el-dropdown-item>
+                        <el-dropdown-item  command="logout">退出登录</el-dropdown-item>
                     </el-dropdown-menu>
                 </el-dropdown>
             </div>
@@ -76,6 +76,14 @@ export default {
                 }).catch(err =>{
                     that.$message.error(err.message);
                 });
+            }
+            //查看个人信息
+            if(command ==='a'){
+                that.$router.push("/selectPersonal")
+            }
+            //修改密码
+            if(command ==='b'){
+                that.$router.push("/updatePassword")
             }
         },
         // 侧边栏折叠

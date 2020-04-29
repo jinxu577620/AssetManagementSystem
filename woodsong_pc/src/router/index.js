@@ -14,6 +14,18 @@ const routes = [
         meta: { title: '框架页面' },
         children: [
             {
+                path: '/selectPersonal',
+                name: 'selectPersonal',
+                component :() => import('../views/user/selectPersonal.vue'),
+                meta: { title: '查看个人信息' }
+            },
+            {
+                path: '/updatePassword',
+                name: 'updatePassword',
+                component :() => import('../views/user/updatePassword.vue'),
+                meta: { title: '修改密码' }
+            },
+            {
                 path: '/dashboard',
                 component: () => import('../views/Dashboard.vue'),
                 meta: { title: '系统首页' }

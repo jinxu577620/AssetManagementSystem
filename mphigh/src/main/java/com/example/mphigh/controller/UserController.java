@@ -1,6 +1,9 @@
 package com.example.mphigh.controller;
 
 
+import com.example.mphigh.entity.User;
+import com.example.mphigh.params.UserPasswordParam;
+import com.example.mphigh.result.CodeMsg;
 import com.example.mphigh.result.Result;
 import com.example.mphigh.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 
 /**
@@ -45,6 +49,19 @@ public class UserController {
 //		session.removeAttribute("imgCode");
 //		session.removeAttribute("telCode");
 
+        return Result.success();
+    }
+    @PostMapping(value = "/updatePassword")
+    public Result saveUser(@Valid UserPasswordParam userForm, HttpServletRequest request) {
+        //原密码 d2840ffc95fd8a5c5c0fb53fc5ff8ea9
+        System.out.println("tel:"+userForm.getId()+", 新的password:"+userForm.getPass());
+        User operateUser = userService.getById(userForm.getId());
+        if (!operateUser.getPassword().equals(userForm.getOldpass())){
+            return Result.error(CodeMsg.PASSWORD_ERROR);
+        }
+        operateUser.setPassword(userForm.getPass());
+        userService.updateById(operateUser);
+        System.out.println(operateUser.toString());
         return Result.success();
     }
 }
