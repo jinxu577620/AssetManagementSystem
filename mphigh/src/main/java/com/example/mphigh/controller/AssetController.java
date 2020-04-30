@@ -27,9 +27,9 @@ public class AssetController {
     @Autowired
     private AssetService assetService;
     @PostMapping(value = "/getAssets")
-    public Result getAssets(Integer pageIndex,Integer pageSize) {
-        System.err.println("到controller了");
-        return assetService.getAssets(pageIndex,pageSize);
+    public Result getAssets(String aname,String acname,String uid,
+    String department,String astate,Integer pageIndex,Integer pageSize) {
+        return assetService.getAssets(aname,acname,uid,department,astate,pageIndex,pageSize);
     }
 
 

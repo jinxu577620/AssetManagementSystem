@@ -67,7 +67,7 @@ export default {
                     icon: 'el-icon-user',
                     index: '/createUser',
                     title: '用户管理',
-                    role: 0,
+                    //role: 0,
                     subs: [
                         {
                             index: '/createUser',
@@ -91,7 +91,7 @@ export default {
                     icon: 'el-icon-lx-friend',
                     index: '/customer',
                     title: '系统管理',
-                    role: 2,
+                    //role: 2,
                     subs: [
                         {
                             index: '/createCustomer',
@@ -120,7 +120,7 @@ export default {
                     icon: 'el-icon-lx-sort',
                     index: '/createOrders',
                     title: '资产采购',
-                    role: 2,
+                    //role: 2,
                     subs: [
                         // {
                         //     index: '/createOrders',

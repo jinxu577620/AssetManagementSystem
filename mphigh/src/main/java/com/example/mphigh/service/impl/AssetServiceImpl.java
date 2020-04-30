@@ -6,6 +6,7 @@ import com.example.mphigh.result.Result;
 import com.example.mphigh.service.AssetService;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 
@@ -27,9 +28,16 @@ public class AssetServiceImpl extends ServiceImpl<AssetMapper, Asset> implements
     AssetMapper assetMapper;
     
     @Override
-    public Result getAssets(Integer pageIndex,Integer pageSize) {
+    public Result getAssets(String aname, String acname, String uid,
+    String department,String astate,Integer pageIndex,Integer pageSize) {
         Page<Asset> page = new Page<>(pageIndex,pageSize);
-        IPage<Asset> assetIPage = assetMapper.selectPage(page, new QueryWrapper<Asset>());
+        System.out.println(aname+"dd"+acname);
+        IPage<Asset> assetIPage = assetMapper.selectPage(page, new QueryWrapper<Asset>()
+        .like(StringUtils.isNotEmpty(aname),"aname",aname)
+        .like(StringUtils.isNotEmpty(acname),"acname",acname)
+        .like(StringUtils.isNotEmpty(uid),"uid",uid)
+        .like(StringUtils.isNotEmpty(department),"department", department)
+        .like(StringUtils.isNotEmpty(astate),"astate",astate));
         return Result.success(assetIPage);
 
     }
