@@ -7,21 +7,20 @@
                         <img v-if="user.headImgUrl" :src="user.headImgUrl" class="user-avator" alt />
                         <img v-else src="../assets/img/photo.jpg" class="user-avator" alt />
                         <div class="user-info-cont">
-                            <div class="user-info-name">{{user.name}}</div>
+                            <div class="user-info-name">{{user.cname}}</div>
                             <div v-if="user.role==0">管理员</div>
                             <div v-else-if="user.role==1">财务</div>
                             <div v-else-if="user.role==2">销售员</div>
                             <div v-else-if="user.role==3">发货员</div>
-                            <div v-else>无</div>
-                        </div>
+                    </div>
                     </div>
                     <div class="user-info-list">
-                        上次登录时间：
-                        <span>2020-01-17</span>
+                        当前登陆时间:
+                        <span>{{this.nowtime}}</span>
                     </div>
                     <div class="user-info-list">
-                        上次登录地点：
-                        <span>福州</span>
+                        当前登陆地点:
+                        <NewBase></NewBase>
                     </div>
                 </el-card>
             </el-col>
@@ -60,6 +59,9 @@
 
 <script>
 import Schart from 'vue-schart';
+//本来想使用但是不知道如何进行实时刷新
+//import NewData from '../components/utils/NewData.vue'
+import NewBase from '../components/utils/NewBase.vue'
 import bus from '../utils/bus';
 export default {
     name: 'dashboard',
@@ -143,11 +145,14 @@ export default {
                         data: [74, 118, 200, 235, 90]
                     }
                 ]
-            }
+            },
+            nowtime:new Date().toLocaleString(),
+            LocationProvince:"正在定位所在省",    //给渲染层定义一个初始值
+            LocationCity:"正在定位所在市"
         };
     },
     components: {
-        Schart
+        Schart,NewBase
     },
     computed: {
         user() {
@@ -162,12 +167,36 @@ export default {
                 const date = new Date(now - (6 - index) * 86400000);
                 item.name = `${date.getFullYear()}/${date.getMonth() + 1}/${date.getDate()}`;
             });
+        },
+        city(){    //定义获取城市方法
+            const geolocation = new BMap.Geolocation();
+            var _this = this
+            geolocation.getCurrentPosition(function getinfo(position){
+                let city = position.address.city;             //获取城市信息
+                let province = position.address.province;     //获取省份信息
+                _this.LocationProvince = province
+                _this.LocationCity = city
+            }, function(e) {
+                _this.LocationCity = "定位失败"
+            }, {provider: 'baidu'});
+        },
+        getTime() {
+            setInterval(() => {
+                //new Date() new一个data对象，当前日期和时间
+                //toLocaleString() 方法可根据本地时间把 Date 对象转换为字符串，并返回结果。
+                this.nowtime = new Date().toLocaleString();
+            }, 1000)
+        },
+        // /* 在实例创建完成后被立即调用。
+        // 在这一步，实例已完成以下的配置：数据观测 (data observer)，属性和方法的运算，watch/event 事件回调。
+        // 然而，挂载阶段还没开始，$el 属性目前不可见。 */
+        created	:function(){
+            console.log('created');
+            this.getTime();
         }
     }
-};
+}
 </script>
-
-
 <style scoped>
 .el-row {
     margin-bottom: 20px;
@@ -246,7 +275,7 @@ export default {
 }
 
 .user-info-cont div:first-child {
-    font-size: 30px;
+    font-size: 20px;
     color: #222;
 }
 

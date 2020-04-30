@@ -55,7 +55,7 @@ export default {
         return {
             collapse: true,
             fullscreen: false,
-            message:""
+            message:"2"
         };
     },
     computed: {
