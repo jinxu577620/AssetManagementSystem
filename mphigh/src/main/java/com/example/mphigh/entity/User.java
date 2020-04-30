@@ -48,5 +48,26 @@ public class User  {
     private String email;
 
     private String password;
+    public User(){
+
+    }
+    
+    public User(String uid, String uname, String cname, String department, String smauthority, String umauthority,
+            String amauthority, String pauthority, String apauthority, String tel, String ustate, String email,
+            String password) {
+        this.uid = uid;
+        this.uname = uname;
+        this.cname = cname;
+        this.department = department;
+        this.smauthority = smauthority;
+        this.umauthority = umauthority;
+        this.amauthority = amauthority;
+        this.pauthority = pauthority;
+        this.apauthority = apauthority;
+        this.tel = tel;
+        this.ustate = ustate;
+        this.email = email;
+        this.password = password;
+    }
 
 }

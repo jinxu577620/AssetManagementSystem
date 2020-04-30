@@ -18,7 +18,7 @@
                         <el-input v-model="query.acname" placeholder="资产类别"></el-input>
                     </el-col>
                     <el-col :span="4">
-                        <el-input v-model="query.uid" placeholder="所属用户"></el-input>
+                        <el-input v-model="query.uid" placeholder="所属用户编号"></el-input>
                     </el-col>
                     <el-col :span="4">
                         <el-input v-model="query.department" placeholder="所属部门"></el-input>
@@ -50,9 +50,15 @@
                         <p>{{scope.row.price}} 元</p>
                     </template>
                 </el-table-column>
-                <el-table-column prop="astate" label="状态" width="100" align="center"></el-table-column>
+                <el-table-column prop="astate" label="状态" width="100" align="center">
+                    <template slot-scope="scope">
+                        <p>{{scope.row.astate}} 
+                            <el-button @click="userRequset(scope.row)" type="text" size="small">申请</el-button>
+                        </p>
+                    </template>
+                </el-table-column>
                 <el-table-column prop="etime" label="报废时间" width="100" align="center"></el-table-column>
-                <el-table-column prop="uid" label="所属用户" align="center"></el-table-column>
+                <el-table-column prop="uid" label="所属用户编号" align="center"></el-table-column>
                 <el-table-column prop="department" label="所属部门" width="150" align="center"></el-table-column>
                 <el-table-column prop="annex" label="附件" width="150" align="center"></el-table-column>
                 <el-table-column prop="supplier" label="供应商" width="150" align="center"></el-table-column>
@@ -94,6 +100,14 @@ export default {
                 pageIndex: 1,
                 pageSize: 15
             },
+            get:{
+                uid: '',
+                uname: '',
+                aid: '',
+                aname: '',
+                ause: '',
+                department: '',
+            },
             pageTotal: 0,
             tableData: [],
             idx: -1,        // 记录当前编辑行数，从0开始计
@@ -112,7 +126,6 @@ export default {
         this.getData();
     },
     methods: {
-        
         async getData() {
             this.$apis.getAssets(this.query).then(res =>{
                 this.tableData = res.data.records;
@@ -122,11 +135,33 @@ export default {
                 this.$message.error(err);
             });
         },
+
         // 格式化日期函数
         format(records){
             for(let record of records){
                 record.stime = moment(record.stime).format('YYYY-MM-DD');
                 record.etime = moment(record.etime).format('YYYY-MM-DD');
+            }
+        },
+        // 申请物资
+        async userRequset(row){
+            if(row.astate!="闲置")
+                alert("此物资不能申请！");
+            else{
+                var user = this.$store.state.userInfo.user;
+                var reason = prompt("请输入申请理由");
+                this.get.uid = user.uid;
+                this.get.uname = user.uname;
+                this.get.aid = row.aid;
+                this.get.aname = row.aname;
+                this.get.ause = reason;
+                this.get.department = user.department;
+                this.$apis.useRequest(this.get).then(res =>{
+                    if(res.success==true)
+                        alert("申请成功，等待审批中")
+                }).catch(err =>{
+                    this.$message.error(err);
+                });
             }
         },
         // 触发搜索按钮

@@ -162,7 +162,7 @@ export default {
                             title: '资产验收'
                         },
                         {
-                            index: '/shippedOrders',
+                            index: '/approvalRequest',
                             title: '资产出库审批'
                         },
                         {
@@ -185,11 +185,11 @@ export default {
                     title: '资产使用申请',
                     subs: [
                         {
-                            index: '/pendingDeliverOrders',
+                            index: '/getAssets',
                             title: '资产出库申请'
                         },
                         {
-                            index: '/shippedOrders',
+                            index: '/approvalState',
                             title: '查看审批状态'
                         }
                     ]

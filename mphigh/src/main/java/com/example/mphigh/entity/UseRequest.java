@@ -41,5 +41,18 @@ public class UseRequest  {
     private String rstate;
 
     private String department;
+    public UseRequest(){
+        //添加构造函数的时候一定记着把无参构造函数补上！
+    }
+    public UseRequest(String uid, String uname, Integer aid, String aname, String ause,
+            String department) {
+        this.uid = uid;
+        this.uname = uname;
+        this.aid = aid;
+        this.aname = aname;
+        this.ause = ause;
+        this.rstate = "审批中";
+        this.department = department;
+    }
 
 }

@@ -77,10 +77,19 @@ const routes = [
             },
             {
                 path: '/getAssets',
-                component: () => import('../views/orders/Assets.vue'),
+                component: () => import('../views/asset/Assets.vue'),
                 meta: { title: '查看资产'}
             },
-
+            {
+                path: '/approvalState',
+                component: () => import('../views/asset/useRequest.vue'),
+                meta: { title: '查看出库审批状态'}
+            },
+            {
+                path: '/approvalRequest',
+                component: () => import('../views/asset/ApprovaluseRequest.vue'),
+                meta: { title: '出库审批'}
+            },
             {
                 path: '/createCustomer',
                 component: () => import('../views/customer/CreateCustomer.vue'),
