@@ -2,6 +2,7 @@ package com.example.mphigh.controller;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
@@ -41,6 +42,7 @@ public class UseRequestController {
     public Result add(UseRequest useRequest) {
         useRequestService.save(useRequest);
         //缺少对多人申请同一物资的限制 之后有时间在改  或者在审批同意后对所有其它同一物资申请进行拒绝
+        //解决方案  多人申请同一物资时 同意一个会自动拒绝其它的请求
         return Result.success();
     }
     @PostMapping(value = "/get")
@@ -63,12 +65,16 @@ public class UseRequestController {
             asset.setUid(useRequest.getUid());
             asset.setDepartment(useRequest.getDepartment());
             assetService.updateById(asset);
-            useRequest.setRstate("已同意");
+            useRequest.setRstate("已通过");
             useRequestService.updateById(useRequest);
-            List<UseRequest> requestList = useRequestService.listByIds(new ArrayList<Integer>(Arrays.asList(useRequest.getRid())));
+            HashMap mapTem = new HashMap<String,Integer>();
+            mapTem.put("aid", useRequest.getAid());
+            List<UseRequest> requestList = useRequestService.listByMap(mapTem);
+            System.out.println(requestList.size());
             for (UseRequest request : requestList) {
                 if(request.getRstate().equals("审批中"))
                     request.setRstate("已拒绝");
+                System.out.println(request.getRid()+request.getRstate());
                 useRequestService.updateById(request);
             }
         }

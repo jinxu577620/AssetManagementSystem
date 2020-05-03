@@ -105,6 +105,11 @@ export default {
         },
         //同意使用
         async approval(row){
+            if(row.rstate!="审批中")
+            {
+                alert("已处理过此请求！");
+                return;
+            }
             this.$apis.dicided({dicide:true,rid:row.rid}).then(res =>{
                     if(res.success==true)
                         alert("审批成功")
@@ -113,13 +118,18 @@ export default {
             });
         },
         async refuse(row){
-                console.log("daozhele");
-                this.$apis.dicided({dicide:false,rid:row.rid}).then(res =>{
-                    
-                    if(res.success==true)
-                        alert("拒绝成功")
-                }).catch(err =>{
-                    this.$message.error(err);
+            if(row.rstate!="审批中")
+            {
+                alert("已处理过此请求！");
+                return;
+            }
+            console.log("daozhele");
+            this.$apis.dicided({dicide:false,rid:row.rid}).then(res =>{
+                
+                if(res.success==true)
+                    alert("拒绝成功")
+            }).catch(err =>{
+                this.$message.error(err);
             });
         },
         //拒绝使用

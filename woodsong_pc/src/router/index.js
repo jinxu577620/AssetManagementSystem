@@ -30,11 +30,12 @@ const routes = [
                 component: () => import('../views/Dashboard.vue'),
                 meta: { title: '系统首页' }
             },
-            {
+            /*{
                 path: '/SysUser',
                 component: () => import('../views/user/SysUser.vue'),
                 meta:{title:'用户管理'}
-            },
+            },*/
+            //不注释提示少模块 编译不通过
             {
                 path: '/createUser',
                 component: () => import('../views/user/CreateUser.vue'),
