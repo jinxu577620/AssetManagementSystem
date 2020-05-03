@@ -65,27 +65,8 @@ export default {
                 },
                 {
                     icon: 'el-icon-user',
-                    index: '/createUser',
-                    title: '用户管理',
-                    //role: 0,
-                    subs: [
-                        {
-                            index: '/createUser',
-                            title: '定义角色'
-                        },
-                        {
-                            index: '/userList',
-                            title: '定义部门'
-                        },
-                        {
-                            index: '/userList',
-                            title: '添加用户'
-                        },
-                        {
-                            index: '/userList',
-                            title: '修改密码'
-                        }
-                    ]
+                    index: '/UserList',
+                    title: '用户管理'
                 },
                 {
                     icon: 'el-icon-lx-friend',

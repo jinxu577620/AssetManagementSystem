@@ -31,6 +31,11 @@ const routes = [
                 meta: { title: '系统首页' }
             },
             {
+                path: '/SysUser',
+                component: () => import('../views/user/SysUser.vue'),
+                meta:{title:'用户管理'}
+            },
+            {
                 path: '/createUser',
                 component: () => import('../views/user/CreateUser.vue'),
                 meta: { title: '创建用户', permission: true }
@@ -108,8 +113,9 @@ const routes = [
             {
                 path: '/allCustomers',
                 component: () => import('../views/customer/AllCustomers.vue'),
-                meta: { title: '所有客户', permission: true}
-            },
+                meta: {title: '所有客户', permission: true}
+            }
+            ,
             {
                 path: '/403',
                 component: () => import(/* webpackChunkName: "403" */ '../views/403.vue'),

@@ -1,8 +1,6 @@
 package com.example.mphigh.result;
 
 public enum CodeMsg {
-
-
 	//通用的错误码
 	SUCCESS(0, "success"),
 	NO_TOKEN(500001, "无token，请重新登录"),

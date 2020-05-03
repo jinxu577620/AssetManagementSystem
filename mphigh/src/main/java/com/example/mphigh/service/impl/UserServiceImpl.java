@@ -1,14 +1,19 @@
 package com.example.mphigh.service.impl;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.example.mphigh.entity.User;
 import com.example.mphigh.enums.UserStatus;
 import com.example.mphigh.mapper.UserMapper;
+import com.example.mphigh.params.UserParam;
 import com.example.mphigh.result.CodeMsg;
 import com.example.mphigh.result.Result;
 import com.example.mphigh.service.UserService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.example.mphigh.utils.TokenUtil;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -22,6 +27,7 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements UserService {
+
 
     @Autowired
     private UserMapper userMapper;
@@ -45,5 +51,28 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
 
         // 使用token，就不需要在session中存user了
         return Result.success(TokenUtil.getToken(user.getUid()), user);
+    }
+
+    @Override
+    public void delete(User user) {
+            userMapper.delete(user);
+    }
+
+    @Override
+    public Result findByid(String uid, Integer pageIndex, Integer pageSize) {
+        //设置当前页和页容量
+        Page<User> page = new Page<>(pageIndex, pageSize);
+
+        IPage<User> userIPage = userMapper.selectPage(page, Wrappers.<User>lambdaQuery().like(StringUtils.isNotBlank(uid), User::getUid, uid));
+
+        return Result.success(userIPage);
+    }
+
+    @Override
+    public Result updateUser(UserParam userParam) {
+        User user = userMapper.selectById(userParam.getUid());
+        BeanUtils.copyProperties(userParam, user);
+        userMapper.updateById(user);
+        return Result.success(user);
     }
 }

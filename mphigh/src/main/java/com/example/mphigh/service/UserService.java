@@ -2,6 +2,7 @@ package com.example.mphigh.service;
 
 import com.example.mphigh.entity.User;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.example.mphigh.params.UserParam;
 import com.example.mphigh.result.Result;
 
 /**
@@ -15,4 +16,10 @@ import com.example.mphigh.result.Result;
 public interface UserService extends IService<User> {
 
     Result login(String tel, String password);
+
+    Result findByid(String uid, Integer pageIndex, Integer pageSize);
+
+    void delete(User user);
+
+    Result updateUser(UserParam userParam);
 }
