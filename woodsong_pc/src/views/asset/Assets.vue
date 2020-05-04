@@ -12,36 +12,39 @@
             <div class="handle-box">
                 <el-row :gutter="20">
                     <el-col :span="4">
-                        <el-input v-model="query.aname" placeholder="资产名称"></el-input>
+                        <el-select v-model="selecter" placeholder="请选择">
+                            <el-option
+                            v-for="item in options"
+                            :key="item.value"
+                            :label="item.label"
+                            :value="item.value">
+                            </el-option>
+                        </el-select>
                     </el-col>
-                    <el-col :span="4">
-                        <el-input v-model="query.acname" placeholder="资产类别"></el-input>
+                    <el-col :span="5">
+                        <el-input v-model="temdata" ></el-input>
                     </el-col>
-                    <el-col :span="4">
-                        <el-input v-model="query.uid" placeholder="所属用户编号"></el-input>
-                    </el-col>
-                    <el-col :span="4">
-                        <el-input v-model="query.department" placeholder="所属部门"></el-input>
-                    </el-col>
-                    <el-col :span="3">
-                        <el-input v-model="query.astate" placeholder="状态"></el-input>
-                    </el-col>
-                    <el-col :span="3">
+                   
+                    <el-col :span="2">
                         <el-button type="primary" icon="el-icon-search" @click="handleSearch">搜索</el-button>
                         
                     </el-col>
                 </el-row>
             </div>
             <el-table
+                :row-style="{height:'7px'}"
+                :cell-style="{padding:'0px'}"
+                style="font-size: 10px"
                 :data="tableData"
                 border
                 class="table"
                 ref="multipleTable"
                 :row-class-name="tableRowClassName"
+                
             >
       
                 <el-table-column prop="aid" label="资产编号" align="center"></el-table-column>
-                <el-table-column prop="aname" label="名称" width="90" align="center"></el-table-column>
+                <el-table-column prop="aname" label="名称" width="70" align="center"></el-table-column>
                 <el-table-column prop="acname" label="资产类别" width="90" align="center"></el-table-column>
                 <el-table-column prop="num" label="数量" width="90" align="center"></el-table-column>
                 <el-table-column prop="stime" label="入库时间" width="100" align="center"></el-table-column>
@@ -58,7 +61,7 @@
                     </template>
                 </el-table-column>
                 <el-table-column prop="etime" label="报废时间" width="100" align="center"></el-table-column>
-                <el-table-column prop="uid" label="所属用户编号" align="center"></el-table-column>
+                <el-table-column prop="uid" label="所属用户编号" width="100" align="center"></el-table-column>
                 <el-table-column prop="department" label="所属部门" width="150" align="center"></el-table-column>
                 <el-table-column prop="annex" label="附件" width="150" align="center"></el-table-column>
                 <el-table-column prop="supplier" label="供应商" width="150" align="center"></el-table-column>
@@ -83,14 +86,28 @@
 
 <script>
     import moment from 'moment'   // 日期处理类库
-    // 导出需要安装xlsx 与 file-saver依赖: npm install --save xlsx file-saver
-    //import FileSaver from 'file-saver'
-    //import XLSX from 'xlsx'
+ 
 export default {
-    //name: 'StageCourseList',
     name: 'AssetList',
     data() {
         return {
+            options: [{
+                value: 'aname',
+                label: '资产名称'
+                }, {
+                value: 'acname',
+                label: '资产类别'
+                }, {
+                value: 'uid',
+                label: '所属用户编号'
+                }, {
+                value: 'department',
+                label: '所属部门'
+                }, {
+                value: 'astate',
+                label: '状态'
+                }],
+            
             query: {
                 aname: '',
                 acname: '',
@@ -108,6 +125,8 @@ export default {
                 ause: '',
                 department: '',
             },
+            selecter: "", 
+            temdata: "",
             pageTotal: 0,
             tableData: [],
             idx: -1,        // 记录当前编辑行数，从0开始计
@@ -166,11 +185,27 @@ export default {
         },
         // 触发搜索按钮
         handleSearch() {
+            if(this.selecter == "aname")
+                this.query.aname = this.temdata;
+            else if(this.selecter == "acname")
+                this.query.acname = this.temdata;
+            else if(this.selecter == "uid")
+                this.query.uid = this.temdata;
+            else if(this.selecter == "department")
+                this.query.department = this.temdata;
+            else if(this.selecter == "astate")
+                this.query.astate = this.temdata;
             this.$set(this.query, 'pageIndex', 1);
             this.getData();
+            this.query.aname = "";
+            this.query.acname = "";
+            this.query.uid = "";
+            this.query.department = "";
+            this.query.astate = "";
         },
         // 分页导航
         handlePageChange(val) {
+            
             this.$set(this.query, 'pageIndex', val);
             this.getData();
         },

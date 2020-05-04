@@ -25,7 +25,11 @@
                 <el-table-column prop="aname" label="资产名称" width="100" align="center"></el-table-column>
                 <el-table-column prop="ause" label="申请理由"  align="center"></el-table-column>
                 
-                <el-table-column prop="rstate" label="状态" width="150" align="center">
+                <el-table-column prop="rstate" label="状态" width="150" align="center"
+                    :filters="[{text: '已通过', value: '已通过'}, {text: '已拒绝', value: '已拒绝'}, {text: '审核中', value: '审核中'}]"
+                    :filter-method="filterHandler"
+                    column-key="rstate"
+                >
                     <template slot-scope="scope">
                         <p>{{scope.row.rstate}} 
                         </p>
@@ -123,7 +127,12 @@ export default {
                 });
             }
         },
-        
+       
+        //按状态筛选
+        filterHandler(value, row, column) {
+            const property = column['property'];
+            return row[property] === value;
+        },
         // 分页导航
         handlePageChange(val) {
             this.$set(this.query, 'pageIndex', val);
