@@ -27,5 +27,3 @@ const Asset_Apis = {
     
 }
 export default Asset_Apis
-
-    //zsend

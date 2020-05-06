@@ -31,14 +31,14 @@ const routes = [
                 meta: { title: '系统首页' }
             },
             {
-                path: '/SysUser',
-                component: () => import('../views/user/SysUser.vue'),
-                meta:{title:'用户管理'}
+                path: '/SysRole',
+                component: () => import('../views/purchaseMethod/SysRole.vue'),
+                meta: { title: '定义采购方式', permission: true }
             },
             {
-                path: '/createUser',
-                component: () => import('../views/user/CreateUser.vue'),
-                meta: { title: '创建用户', permission: true }
+                path: '/assetclasss',
+                component: () => import('../views/asset/assetclasss.vue'),
+                meta: { title: '定义资产分类', permission: true }
             },
             {
                 path: '/userList',

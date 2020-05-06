@@ -2,6 +2,9 @@ package com.example.mphigh.service;
 
 import com.example.mphigh.entity.AssetClass;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.example.mphigh.params.AssetclassParam;
+import com.example.mphigh.params.purchaseParam;
+import com.example.mphigh.result.Result;
 
 /**
  * <p>
@@ -13,4 +16,11 @@ import com.baomidou.mybatisplus.extension.service.IService;
  */
 public interface AssetClassService extends IService<AssetClass> {
 
+    Result updateassetClass(AssetclassParam param);
+
+    Result createassetClass(AssetclassParam param);
+
+    Result findByidandName(String acid, String acname, Integer pageIndex, Integer pageSize);
+
+    void delete(AssetClass assetClass);
 }
