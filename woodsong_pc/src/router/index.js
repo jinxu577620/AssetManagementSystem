@@ -30,16 +30,15 @@ const routes = [
                 component: () => import('../views/Dashboard.vue'),
                 meta: { title: '系统首页' }
             },
-            /*{
-                path: '/SysUser',
-                component: () => import('../views/user/SysUser.vue'),
-                meta:{title:'用户管理'}
-            },*/
-            //不注释提示少模块 编译不通过
             {
-                path: '/createUser',
-                component: () => import('../views/user/CreateUser.vue'),
-                meta: { title: '创建用户', permission: true }
+                path: '/SysRole',
+                component: () => import('../views/purchaseMethod/SysRole.vue'),
+                meta: { title: '定义采购方式', permission: true }
+            },
+            {
+                path: '/assetclasss',
+                component: () => import('../views/asset/assetclasss.vue'),
+                meta: { title: '定义资产分类', permission: true }
             },
             {
                 path: '/userList',

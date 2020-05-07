@@ -75,11 +75,11 @@ export default {
                     //role: 2,
                     subs: [
                         {
-                            index: '/createCustomer',
+                            index: '/SysRole',
                             title: '定义采购方式'
                         },
                         {
-                            index: '/myCustomers',
+                            index: '/assetclasss',
                             title: '定义资产分类'
                         },
                         {
@@ -90,10 +90,6 @@ export default {
                         {
                             index: '/commonCustomers',
                             title: '定义折旧规则'
-                        },
-                        {
-                            index: '/commonCustomers',
-                            title: '初始化数据'
                         }
                     ]
                 },

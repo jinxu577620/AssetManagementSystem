@@ -20,7 +20,7 @@ public enum CodeMsg {
 	PASSWORD_ERROR(500215, "密码错误"),
 	OLD_PASSWORD_ERROR(500215, "旧密码错误"),
 	CODE_ERROR(500216, "验证码错误"),
-	MOBILE_IS_USED(500217, "手机号已注册"),
+	METHOD_IS_USED(500217, "支付方式已注册"),
 	MOBILE_IS_NOT_REGISTER(500218, "手机号尚未注册，请先进行注册"),
 	MAIL_IS_USED(500217, "邮箱已使用"),
 
