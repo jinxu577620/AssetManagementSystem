@@ -1,8 +1,8 @@
 package com.example.mphigh.entity;
 
 import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.extension.activerecord.Model;
 import com.baomidou.mybatisplus.annotation.TableId;
+
 import java.io.Serializable;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -14,7 +14,7 @@ import lombok.experimental.Accessors;
  * </p>
  *
  * @author jinxu18829190342@163.com
- * @since 2020-04-26
+ * @since 2020-05-09
  */
 @Data
 @Accessors(chain = true)
@@ -26,5 +26,21 @@ public class AcceptProcess {
     private Integer pid;
 
     private String pname;
+
+    /**
+     * 第一审核人
+     */
+    private String uid1;
+
+    private String uid2;
+
+    private String uid3;
+
+    private String uid4;
+
+    private String uid5;
+
+    private String uid6;
+
 
 }

@@ -6,11 +6,17 @@
     <resultMap id="BaseResultMap" type="com.example.mphigh.entity.AcceptProcess">
         <id column="pid" property="pid" />
         <result column="pname" property="pname" />
+        <result column="uid1" property="uid1" />
+        <result column="uid2" property="uid2" />
+        <result column="uid3" property="uid3" />
+        <result column="uid4" property="uid4" />
+        <result column="uid5" property="uid5" />
+        <result column="uid6" property="uid6" />
     </resultMap>
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        pid, pname
+        pid, pname, uid1, uid2, uid3, uid4, uid5, uid6
     </sql>
 
 </mapper>
