@@ -81,15 +81,6 @@ export default {
                         {
                             index: '/assetclasss',
                             title: '定义资产分类'
-                        },
-                        {
-                            index: '/allCustomers',
-                            title: '定义审核流程',
-                            role: 0
-                        },
-                        {
-                            index: '/commonCustomers',
-                            title: '定义折旧规则'
                         }
                     ]
                 },
