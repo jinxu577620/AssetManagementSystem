@@ -108,7 +108,7 @@ export default {
                         //     title: '待审批订单'
                         // },
                         {
-                            index: '/pendingSendOrders',
+                            index: '/purchaseRequest',
                             title: '采购申请'
                         },
                         {

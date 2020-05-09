@@ -46,6 +46,11 @@ const routes = [
                 meta: { title: '用户列表', permission: true}
             },
             {
+                path: '/purchaseRequest',
+                component: () => import('../views/purchase/purchaseRequest.vue'),
+                meta: { title: '采购申请'}
+            },
+            {
                 path: '/createOrders',
                 component: () => import('../views/orders/CreateOrders.vue'),
                 meta: { title: '创建订单'}
