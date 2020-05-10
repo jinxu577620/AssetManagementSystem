@@ -1,6 +1,7 @@
 package com.example.mphigh.service;
 
 import com.example.mphigh.entity.PurchaseRequest;
+import com.example.mphigh.result.Result;
 import com.baomidou.mybatisplus.extension.service.IService;
 
 /**
@@ -12,5 +13,5 @@ import com.baomidou.mybatisplus.extension.service.IService;
  * @since 2020-04-26
  */
 public interface PurchaseRequestService extends IService<PurchaseRequest> {
-
+    Result get(Integer pageIndex, Integer pageSize);
 }

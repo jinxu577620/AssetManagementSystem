@@ -43,7 +43,7 @@ public class PurchaseRequest  {
 
     private String pmname;
 
-    private String rstate;
+    private Integer rstate;
 
     private Integer pid;
 

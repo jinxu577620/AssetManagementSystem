@@ -7,10 +7,9 @@
                 </el-breadcrumb-item>
             </el-breadcrumb>
         </div>
-
         <div class="container">
             <div class="handle-box">
-                <el-input v-model="query.aname" placeholder="采购物资名称" class="handle-input mr10"></el-input>
+                <el-input v-model="query.pmname" placeholder="采购方式" class="handle-input mr10"></el-input>
                 <el-button type="primary" icon="el-icon-search" @click="handleSearch">搜索</el-button>
                 <el-button type="primary" icon="el-icon-edit"  @click="handleAdd">新增</el-button>
             </div>
@@ -63,8 +62,7 @@
                 ></el-pagination>
             </div>
         </div>
-        
-        <!-- 编辑弹出框 
+        <!-- 编辑弹出框 -->
         <el-dialog title="编辑" :visible.sync="editVisible" width="780px">
             <el-form ref="form" :model="form" :rules="rules" label-width="100px">
                 <el-form-item label="编号" prop="pmid">
@@ -79,19 +77,17 @@
                 <el-button type="primary" @click="saveEdit('form')">确 定</el-button>
             </span>
         </el-dialog>
-        
         <el-dialog title="新增" :visible.sync="addFormVisible" :close-on-click-modal="false">
-            <el-form :model="addForm" :rules="addFormRules" ref="addForm" label-width="166px">
-            <el-form-item label="采购方式" prop="pmname">
-            <el-input v-model="addForm.pmname" auto-complete="off" style="width:400px;"></el-input>
-            </el-form-item>
-            </el-form>
-            <div slot="footer" class="dialog-footer">
-                <el-button @click="addFormVisible = false">取消</el-button>
-                <el-button type="primary" @click="addSubmit" :loading="addLoading">提交</el-button>
-            </div>
+        <el-form :model="addForm" :rules="addFormRules" ref="addForm" label-width="166px">
+        <el-form-item label="采购方式" prop="pmname">
+        <el-input v-model="addForm.pmname" auto-complete="off" style="width:400px;"></el-input>
+        </el-form-item>
+        </el-form>
+        <div slot="footer" class="dialog-footer">
+        <el-button @click="addFormVisible = false">取消</el-button>
+        <el-button type="primary" @click="addSubmit" :loading="addLoading">提交</el-button>
+        </div>
         </el-dialog>
-        -->
     </div>
 </template>
 

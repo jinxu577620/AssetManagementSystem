@@ -39,7 +39,7 @@ public class AcceptRequest {
 
     private String evaluate;
 
-    private String astate;
+    private Integer astate;
 
     private Integer pid;
 
