@@ -1,42 +1,29 @@
 const PurchaseRequest_Apis = {
     //查看所有采购申请
-    getPurchaseRequset:{
+    getPurchaseRequsetByA:{
         method:"post",
-        url:'/purchase-request/get'
+        url:'/purchase-request/getByA'
     },
+    getPurchaseRequsetByUid:{
+        method:"post",
+        url:'/purchase-request/getByUid'
+    },
+
     addPurchaseRequest:{
         method:"post",
         url:''
     },
     //流程的也写这算了
-    getPurchaseProcess:{
+    getApprovalProcess:{
         method:"post",
-        url:''
+        url:'/approval-process/get'
     },
-    addPurchaseProcess:{
+    addApprovalProcess:{
         method:"post",
-        url:''
+        url:'/approval-process/add'
     },
 
-    //资产申请
-    /*useRequest:{
-        method:"post",
-        url:'/use-request/add'
-    },
-    dicide:{
-        method:"post",
-        usl:'use-request/dicide'
-    },
-    //查看审批申请
-    getUseRequest:{
-        method:"post",
-        url:'/use-request/get'
-    },
-    dicided:{
-        method:"post",
-        url:'/use-request/dicide'
-    },*/
-    //审批
+   
     
 }
 export default PurchaseRequest_Apis

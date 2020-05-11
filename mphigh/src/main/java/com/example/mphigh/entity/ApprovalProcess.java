@@ -39,6 +39,16 @@ public class ApprovalProcess  {
 
     private String uid6;
 
+    public ApprovalProcess(String pname, String uid1, String uid2, String uid3, String uid4, String uid5, String uid6) {
+        this.pname = pname;
+        this.uid1 = uid1;
+        this.uid2 = uid2;
+        this.uid3 = uid3;
+        this.uid4 = uid4;
+        this.uid5 = uid5;
+        this.uid6 = uid6;
+    }
+    public ApprovalProcess() {}
 
 
 }

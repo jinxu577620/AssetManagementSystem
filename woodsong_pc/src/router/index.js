@@ -51,6 +51,17 @@ const routes = [
                 meta: { title: '采购申请'}
             },
             {
+                path: '/approvalProcess',
+                component: () => import('../views/process/approvalProcess.vue'),
+                meta: { title: '采购审批流程'}
+            },
+            {
+                path: '/acceptProcess',
+                component: () => import('../views/process/acceptProcess.vue'),
+                meta: { title: '采购验收流程'}
+            },
+            
+            {
                 path: '/createOrders',
                 component: () => import('../views/orders/CreateOrders.vue'),
                 meta: { title: '创建订单'}

@@ -29,8 +29,7 @@ public class PurchaseRequestController {
     /*@PostMapping(value = "/add")
     public Result add(UseRequest useRequest) {
         useRequestService.save(useRequest);
-        //缺少对多人申请同一物资的限制 之后有时间在改  或者在审批同意后对所有其它同一物资申请进行拒绝
-        //解决方案  多人申请同一物资时 同意一个会自动拒绝其它的请求
+        
         return Result.success();
     }*/
     @PostMapping(value = "/get")

@@ -81,6 +81,14 @@ export default {
                         {
                             index: '/assetclasss',
                             title: '定义资产分类'
+                        },
+                        {
+                            index: '/approvalProcess',
+                            title: '定义审批流程'
+                        },
+                        {
+                            index: '/acceptProcess',
+                            title: '定义验收流程'
                         }
                     ]
                 },
@@ -88,16 +96,7 @@ export default {
                     icon: 'el-icon-lx-sort',
                     index: '/createOrders',
                     title: '资产采购',
-                    //role: 2,
                     subs: [
-                        // {
-                        //     index: '/createOrders',
-                        //     title: '创建订单'
-                        // },
-                        // {
-                        //     index: '/pendingApprovalOrders',
-                        //     title: '待审批订单'
-                        // },
                         {
                             index: '/purchaseRequest',
                             title: '采购申请'
@@ -149,7 +148,7 @@ export default {
                 },
                 {
                     icon: 'el-icon-lx-calendar',
-                    index: '/pendingSendOrders',
+                    index: '/pendingSendOrders0',
                     title: '资产使用申请',
                     subs: [
                         {
