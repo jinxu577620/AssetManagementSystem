@@ -34,11 +34,6 @@ public class ApprovalProcessController {
     public Result add(ApprovalProcess approvalProcess) {
         //检测工号是否存在
         boolean flag = true;
-        System.out.println(approvalProcess.getPname());
-        System.out.println(approvalProcess.getUid1());
-        System.out.println(approvalProcess.getUid2());
-        System.out.println(approvalProcess.getUid3());
-        System.out.println(approvalProcess.getUid4());
         if(!approvalProcess.getUid1().isEmpty() && (userService.getById(approvalProcess.getUid1()) == null || userService.getById(approvalProcess.getUid1()).getApauthority().equals("N")))
             flag = false;  //满足说明输错了
         else if(!approvalProcess.getUid2().isEmpty() && (userService.getById(approvalProcess.getUid2()) == null || userService.getById(approvalProcess.getUid2()).getApauthority().equals("N")))

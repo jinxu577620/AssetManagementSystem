@@ -55,9 +55,7 @@
 import bus from '../../utils/bus';
 export default {
     data() {
-        return {
-            collapse: false,
-            items: [
+        var role = [
                 {
                     icon: 'el-icon-lx-home',
                     index: '/dashboard',
@@ -146,6 +144,18 @@ export default {
                         }
                     ]
                 },
+
+                {
+                    icon: 'el-icon-lx-calendar',
+                    index: '/pendingSendOrders1',
+                    title: '资产采购审批',
+                    subs: [
+                        {
+                            index: '/shippedOrders',
+                            title: '资产采购审批'
+                        }
+                    ]
+                },
                 {
                     icon: 'el-icon-lx-calendar',
                     index: '/pendingSendOrders0',
@@ -161,7 +171,25 @@ export default {
                         }
                     ]
                 }
-            ]
+            ];
+        
+        let user = this.$store.state.userInfo.user;
+        var target = [];
+        target.push(role[0]);
+        if(user.smauthority == 'Y')
+            target.push(role[1]);
+        if(user.umauthority == 'Y')
+            target.push(role[2]);
+        if(user.amauthority == 'Y')
+            target.push(role[3]);
+        if(user.pauthority == 'Y')
+            target.push(role[4]);
+        if(user.apauthority == 'Y')
+            target.push(role[5]);
+        target.push(role[6]);
+        return {
+            collapse: false,
+            items: target,
         };
     },
     computed: {

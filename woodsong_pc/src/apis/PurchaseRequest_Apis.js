@@ -14,6 +14,7 @@ const PurchaseRequest_Apis = {
         url:''
     },
     //流程的也写这算了
+    //审批流程
     getApprovalProcess:{
         method:"post",
         url:'/approval-process/get'
@@ -22,7 +23,15 @@ const PurchaseRequest_Apis = {
         method:"post",
         url:'/approval-process/add'
     },
-
+    //验收流程
+    getAcceptProcess:{
+        method:"post",
+        url:'/accept-process/get'
+    },
+    addAcceptProcess:{
+        method:"post",
+        url:'/accept-process/add'
+    },
    
     
 }

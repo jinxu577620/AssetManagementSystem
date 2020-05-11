@@ -174,17 +174,3 @@
         }
     };
 </script>
-
-<style scoped>
-    .handle-box {
-        margin-bottom: 20px;
-    }
-
-    .handle-select {
-        width: 120px;
-    }
-
-    .handle-input {
-        width: 300px;
-        display: inline-block;
-    }
