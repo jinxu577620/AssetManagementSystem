@@ -56,7 +56,6 @@ public class ApprovalProcessController {
     }
     @PostMapping(value = "/get")
     public Result get() {
-        System.out.println("daozhezs");
         return Result.success(approvalProcessService.list());
     }
 }

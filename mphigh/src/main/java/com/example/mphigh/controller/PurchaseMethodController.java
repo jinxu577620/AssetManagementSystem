@@ -40,7 +40,6 @@ public class PurchaseMethodController {
     @PostMapping(value = "/savePurchaseMethod")
     public Result savePurchaseMethod(@Valid purchaseParam param, HttpServletRequest request) {
         PurchaseMethod operateUser = purchaseMethodService.getById(param.getPmid());
-        System.out.println("进来了吗");
         // id不为空，则修改
         if(operateUser!=null){
             return  purchaseMethodService.updatePurchaseMethod(param);

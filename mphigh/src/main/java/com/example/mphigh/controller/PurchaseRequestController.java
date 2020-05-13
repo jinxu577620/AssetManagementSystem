@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.RequestBody;
+
 
 /**
  * <p>
@@ -26,14 +28,26 @@ public class PurchaseRequestController {
     private PurchaseRequestService purchaseRequestService;
 
     
-    /*@PostMapping(value = "/add")
-    public Result add(UseRequest useRequest) {
-        useRequestService.save(useRequest);
-        
+    @PostMapping(value = "/add")
+    public Result add(PurchaseRequest purchaseRequest) {
+        System.out.println("purchaseRequest");
+        purchaseRequestService.save(purchaseRequest);
         return Result.success();
-    }*/
-    @PostMapping(value = "/get")
-    public Result get(Integer pageIndex, Integer pageSize) {
-        return purchaseRequestService.get(pageIndex,pageSize);
     }
+    @PostMapping(value = "/getByA")
+    public Result getByA(Integer pageIndex, Integer pageSize) {
+        return purchaseRequestService.getByA(pageIndex,pageSize);
+    }
+    @PostMapping(value = "/getByUid")
+    public Result getByUid(String uid,Integer pageIndex, Integer pageSize) {
+        return purchaseRequestService.getByUid(uid,pageIndex,pageSize);
+    }
+    @PostMapping(value="/dicide")
+    public Result dicide(boolean dicded,String rid){  
+        //更改状态
+
+        return Result.success();
+    }
+    
+
 }

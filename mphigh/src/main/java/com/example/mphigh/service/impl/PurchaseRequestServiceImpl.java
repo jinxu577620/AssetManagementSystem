@@ -26,9 +26,15 @@ public class PurchaseRequestServiceImpl extends ServiceImpl<PurchaseRequestMappe
     PurchaseRequestMapper purchaseRequestMapper;
     
     @Override
-    public Result get(Integer pageIndex, Integer pageSize) {
+    public Result getByA(Integer pageIndex, Integer pageSize) {
         Page<PurchaseRequest> page = new Page<>(pageIndex,pageSize);
-        IPage<PurchaseRequest> purchaseRequestIPage = purchaseRequestMapper.selectPage(page, new QueryWrapper<PurchaseRequest>());
+        IPage<PurchaseRequest> purchaseRequestIPage = purchaseRequestMapper.selectPage(page, new QueryWrapper<PurchaseRequest>().notLike("rstate", 0).notLike("rstate", -1));
+        return Result.success(purchaseRequestIPage);
+    }
+    @Override
+    public Result getByUid(String uid, Integer pageIndex, Integer pageSize) {
+        Page<PurchaseRequest> page = new Page<>(pageIndex,pageSize);
+        IPage<PurchaseRequest> purchaseRequestIPage = purchaseRequestMapper.selectPage(page, new QueryWrapper<PurchaseRequest>().eq("uid",uid));
         return Result.success(purchaseRequestIPage);
     }
 }

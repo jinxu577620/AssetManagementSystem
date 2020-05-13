@@ -13,5 +13,6 @@ import com.baomidou.mybatisplus.extension.service.IService;
  * @since 2020-04-26
  */
 public interface PurchaseRequestService extends IService<PurchaseRequest> {
-    Result get(Integer pageIndex, Integer pageSize);
+    Result getByA(Integer pageIndex, Integer pageSize);
+    Result getByUid(String uid, Integer pageIndex, Integer pageSize);
 }

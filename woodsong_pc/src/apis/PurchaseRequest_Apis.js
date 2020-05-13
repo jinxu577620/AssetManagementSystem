@@ -1,17 +1,23 @@
 const PurchaseRequest_Apis = {
-    //查看所有采购申请
+    //查看可处理的采购申请
     getPurchaseRequsetByA:{
         method:"post",
         url:'/purchase-request/getByA'
     },
+    //查看审批状态
     getPurchaseRequsetByUid:{
         method:"post",
         url:'/purchase-request/getByUid'
     },
-
+    //申请
     addPurchaseRequest:{
         method:"post",
-        url:''
+        url:'/purchase-request/add'
+    },
+    //审批同意或拒绝
+    approvalDicide:{
+        method:"post",
+        url:'/approval-process/dicide'
     },
     //流程的也写这算了
     //审批流程

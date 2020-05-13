@@ -40,14 +40,12 @@
                     <template slot-scope="scope">
                         <el-button
                                 type="text"
-                                icon="el-icon-edit"
-                                @click="handleEdit(scope.$index, scope.row)"
+                                @click="handleAgree(scope.$index, scope.row)"
                         >通过</el-button>
                         <el-button
                                 type="text"
-                                icon="el-icon-delete"
                                 class="red"
-                                @click="handleDelete(scope.$index, scope.row)"
+                                @click="handleRefuse(scope.$index, scope.row)"
                         >拒绝</el-button>
                     </template>
                 </el-table-column>
@@ -63,35 +61,48 @@
                 ></el-pagination>
             </div>
         </div>
-        
-        <!-- 编辑弹出框 
-        <el-dialog title="编辑" :visible.sync="editVisible" width="780px">
-            <el-form ref="form" :model="form" :rules="rules" label-width="100px">
-                <el-form-item label="编号" prop="pmid">
-                    <el-input v-model="form.pmid"></el-input>
-                </el-form-item>
-                <el-form-item label="采购方式" width="80px" prop="pmname">
-                    <el-input v-model="form.pmname"></el-input>
-                </el-form-item>
-            </el-form>
-            <span slot="footer" class="dialog-footer">
-                <el-button @click="resetForm('form')">取 消</el-button>
-                <el-button type="primary" @click="saveEdit('form')">确 定</el-button>
-            </span>
-        </el-dialog>
-        
+
+        <!-- 编辑弹出框 -->
         <el-dialog title="新增" :visible.sync="addFormVisible" :close-on-click-modal="false">
-            <el-form :model="addForm" :rules="addFormRules" ref="addForm" label-width="166px">
-            <el-form-item label="采购方式" prop="pmname">
-            <el-input v-model="addForm.pmname" auto-complete="off" style="width:400px;"></el-input>
-            </el-form-item>
+            <el-form :model="addForm" :rules="addFormRules" ref="addForm" >
+                <el-form-item label="资产名称" prop="aname">
+                    <el-input v-model="addForm.aname" auto-complete="off"></el-input>
+                </el-form-item>
+                <el-form-item label="资产分类" prop="aclass">
+                    <select @change="aclassData"
+                        v-model="selectAC">
+                        <option v-for='item in aclassData'
+                            :key="item.acid"
+                            :value="item">
+                            {{item.acid}}:{{item.acname}}
+                        </option>
+                    </select>
+                </el-form-item>
+                <el-form-item label="数量" prop="num">
+                    <el-input v-model="addForm.num" auto-complete="off"></el-input>
+                </el-form-item>
+                <el-form-item label="预算" prop="budget">
+                    <el-input v-model="addForm.budget" auto-complete="off"></el-input>
+                </el-form-item>
+                <el-form-item label="采购方式名称" prop="pmname">
+                    <el-input v-model="addForm.pmname" auto-complete="off"></el-input>
+                </el-form-item>
+                <el-form-item label="采购流程编号" prop="pid">
+                    <el-input v-model="addForm.pid" auto-complete="off"></el-input>
+                </el-form-item>
+                <el-form-item label="详细描述" prop="specification">
+                    <el-input v-model="addForm.specification" auto-complete="off"></el-input>
+                </el-form-item>
+                <el-form-item label="生产厂家" prop="manufacturer">
+                    <el-input v-model="addForm.manufacturer" auto-complete="off"></el-input>
+                </el-form-item>
             </el-form>
             <div slot="footer" class="dialog-footer">
-                <el-button @click="addFormVisible = false">取消</el-button>
-                <el-button type="primary" @click="addSubmit" :loading="addLoading">提交</el-button>
+            <el-button @click="addFormVisible = false">取消</el-button>
+            <el-button type="primary" @click="addSubmit" :loading="addLoading">提交</el-button>
             </div>
         </el-dialog>
-        -->
+        
     </div>
 </template>
 
@@ -104,6 +115,21 @@
                     aname:'',
                     pageIndex: 1,
                     pageSize: 15
+                },
+                addForm:{
+                    aname : "",     //输入
+                    aclass: "",     //选
+                    acid: "",       
+                    num: "",            //输入
+                    budget: "",         //输入
+                    uid: "",            //自动
+                    uname: "",      //自动
+                    pmid: "",       
+                    pmname: "",     //选
+                    rstate: 1,     //自动
+                    pid: "",        //选
+                    specification: "",  //输入
+                    manufacturer: "",   //输入
                 },
                 pageTotal: 0,
                 tableData: {
@@ -141,7 +167,7 @@
                     uid5: '',
                     uid6: '',
                 },
-
+                selectAC:{},
                 idx: -1,        // 记录当前编辑行数，从0开始计
                 addFormVisible:false,
                 editVisible: false,
@@ -154,6 +180,27 @@
         },
         created() {
             this.getData();
+            this.$apis.getassetClass({
+                acid:'',
+                acname: '',
+                pageSize: 100
+            },).then(res =>{
+                this.aclassData = res.data.records;
+            }).catch(err =>{
+                this.$message.error(err);
+            });
+  
+            this.$apis.getPurchaseMethod({pmid:'',pmname:'',pageSize: 100}).then(res =>{
+                this.pmData = res.data.records;
+            }).catch(err =>{
+                this.$message.error(err);
+            });
+
+            this.$apis.getApprovalProcess().then(res =>{
+                this.pData = res.data.records;
+            }).catch(err =>{
+                this.$message.error(err);
+            });
         },
         // 路由的进入和切换回相应的触发activated和deactivated
         activated() {
@@ -162,38 +209,23 @@
         },
         methods: {
             async getData() {
-               this.$apis.getPurchaseRequset(this.query).then(res =>{
+               this.$apis.getPurchaseRequsetByA(this.query).then(res =>{
                     this.tableData = res.data.records;
                     this.pageTotal = res.data.total || 1;
                 }).catch(err =>{
                     this.$message.error(err);
                 });
-
-               /*  this.$apis.getassetClass({pageSize: 1000}).then(res =>{
-                    this.aclassData = res.data.records;
-                }).catch(err =>{
-                    this.$message.error(err);
-                });
-
-                this.$apis.getPurchaseMethod({pageSize: 1000}).then(res =>{
-                    this.pmData = res.data.records;
-                }).catch(err =>{
-                    this.$message.error(err);
-                });
-
-                this.$apis.getPurchaseProcess({pageSize: 1000}).then(res =>{
-                    this.pData = res.data.records;
-                }).catch(err =>{
-                    this.$message.error(err);
-                });*/
             },
+
             addSubmit: function() {
                 this.$refs.addForm.validate(valid => {
                     if (valid) {
                         this.$confirm("确认提交吗？", "提示", {}).then(() => {
                             this.addLoading = true;
+                            this.addForm.acid=this.selectAC.acid;
+                            this.addForm.aclass=this.selectAC.acid;
                             let param = Object.assign({}, this.addForm);
-                            this.$apis.savePurchaseMethod(param).then(res => {
+                            this.$apis.addPurchaseRequest(this.addForm).then(res => {
                                 this.addLoading = false;
                                 this.$message({
                                     message: "提交成功",
@@ -214,7 +246,10 @@
                 this.query.pmname=""
 
             },
-            
+            handleAdd: function() {
+                this.addFormVisible = true;
+                
+            },
             // 保存修改或添加
             async saveEdit(formName) {
                 this.$refs[formName].validate(async (valid) => {
@@ -237,9 +272,12 @@
                 this.$refs[formName].resetFields();
                 this.editVisible = false;
             },
-            // 删除操作
-            handleDelete(index, row) {
-                // 二次确认删除
+            // 同意操作
+            async handleAgree(index, row) {
+
+            },
+            //拒绝
+            async handleRefuse(index, row) {
                 this.$confirm('确定要删除吗？', '提示', {
                     type: 'warning'
                 })
