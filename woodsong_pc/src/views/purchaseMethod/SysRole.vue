@@ -67,9 +67,9 @@
             </span>
         </el-dialog>
         <el-dialog title="新增" :visible.sync="addFormVisible" :close-on-click-modal="false">
-        <el-form :model="addForm" :rules="addFormRules" ref="addForm" label-width="166px">
+        <el-form :model="addForm" :rules="addFormRules" ref="addForm" >
         <el-form-item label="采购方式" prop="pmname">
-        <el-input v-model="addForm.pmname" auto-complete="off" style="width:400px;"></el-input>
+        <el-input v-model="addForm.pmname" auto-complete="off"></el-input>
         </el-form-item>
         </el-form>
         <div slot="footer" class="dialog-footer">
@@ -102,8 +102,8 @@
                 addFormVisible:false,
                 editVisible: false,
                 form: {},
-                rules: {
-                    pmname: [{ required: true, message: '请输入名称', trigger: 'blur' }],
+                addFormRules: {
+                    pmname: [{ required: true, message: '采购方式不能为空', trigger: 'blur' }],
                 },
                 //新增界面数据
                 addForm: []

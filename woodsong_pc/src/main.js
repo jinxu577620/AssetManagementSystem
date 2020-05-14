@@ -6,11 +6,17 @@ import './plugins/element.js'
 import './assets/css/icon.css';
 import 'babel-polyfill'
 
+
+import echarts from 'echarts';
+Vue.prototype.$echarts = echarts;
+
+
 Vue.config.productionTip = false
 
 // api请求接口
 import apis from './apis/index.js';
 Vue.prototype.$apis = apis;
+
 
 // 上传oss接口
 import oss from './utils/ossUtil'

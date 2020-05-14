@@ -131,8 +131,14 @@ export default {
                             title: '资产出库审批'
                         },
                         {
-                            index: '/shippedOrders',
-                            title: '查看分析数据'
+                            index: '/DataAnalysis',
+                            title: '查看分析数据',
+                            // subs:[
+                            //     {
+                            //         index: '/PooledAnalysis',
+                            //         title: '资产信息汇总'
+                            //     }
+                            // ]
                         },
                         {
                             index: '/shippedOrders',

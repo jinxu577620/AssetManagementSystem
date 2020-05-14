@@ -5,6 +5,10 @@ const Asset_Apis = {
         method:"post",
         url:'/asset/getAssets'
     },
+    getAssetData:{
+        method:"get",
+        url:'/asset/getAssetData'
+    },
     //资产申请
     useRequest:{
         method:"post",
