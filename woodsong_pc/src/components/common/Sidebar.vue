@@ -90,14 +90,6 @@ export default {
                     title: '资产采购',
                     //role: 2,
                     subs: [
-                        // {
-                        //     index: '/createOrders',
-                        //     title: '创建订单'
-                        // },
-                        // {
-                        //     index: '/pendingApprovalOrders',
-                        //     title: '待审批订单'
-                        // },
                         {
                             index: '/pendingSendOrders',
                             title: '采购申请'
@@ -134,8 +126,14 @@ export default {
                             title: '资产出库审批'
                         },
                         {
-                            index: '/shippedOrders',
-                            title: '查看分析数据'
+                            index: '/DataAnalysis',
+                            title: '查看分析数据',
+                            // subs:[
+                            //     {
+                            //         index: '/PooledAnalysis',
+                            //         title: '资产信息汇总'
+                            //     }
+                            // ]
                         },
                         {
                             index: '/shippedOrders',

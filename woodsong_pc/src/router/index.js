@@ -76,9 +76,9 @@ const routes = [
                 meta: { title: '待发货订单'}
             },
             {
-                path: '/shippedOrders',
-                component: () => import('../views/orders/ShippedOrders.vue'),
-                meta: { title: '已发货订单'}
+                path: '/DataAnalysis',
+                component: () => import('../views/Data/DataAnalysis.vue'),
+                meta: { title: '数据图表'}
             },
             {
                 path: '/getAssets',
