@@ -103,7 +103,10 @@
                     uid5: '',
                     uid6: '',
                 },
-                
+                addFormRules: {
+                    pname: [{ required: true, message: '不能为空', trigger: 'blur' }],
+                    uid1: [{ required: true, message: '不能为空', trigger: 'blur' }],
+                },
             };
         },
         created() {

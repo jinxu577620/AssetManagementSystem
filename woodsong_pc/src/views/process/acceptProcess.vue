@@ -103,7 +103,10 @@
                     uid5: '',
                     uid6: '',
                 },
-                
+                addFormRules: {
+                    pname: [{ required: true, message: '不能为空', trigger: 'blur' }],
+                    uid1: [{ required: true, message: '不能为空', trigger: 'blur' }],
+                },
             };
         },
         created() {
@@ -114,6 +117,7 @@
             //只刷新数据，不改变整体的缓存
             this.getData();
         },
+        
         methods: {
             async getData() {
                 this.$apis.getAcceptProcess(this.query).then(res =>{

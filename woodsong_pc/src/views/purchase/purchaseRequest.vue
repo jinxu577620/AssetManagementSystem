@@ -70,7 +70,7 @@
                 </el-form-item>
                 <el-form-item label="资产分类" prop="aclass">
                     <select @change="aclassData"
-                        v-model="selectAC">
+                        v-model="selectData1">
                         <option v-for='item in aclassData'
                             :key="item.acid"
                             :value="item">
@@ -85,10 +85,24 @@
                     <el-input v-model="addForm.budget" auto-complete="off"></el-input>
                 </el-form-item>
                 <el-form-item label="采购方式名称" prop="pmname">
-                    <el-input v-model="addForm.pmname" auto-complete="off"></el-input>
+                    <select @change="pmData"
+                        v-model="selectData2">
+                        <option v-for='item in pmData'
+                            :key="item.pmid"
+                            :value="item">
+                            {{item.pmid}}:{{item.pmname}}
+                        </option>
+                    </select>
                 </el-form-item>
                 <el-form-item label="采购流程编号" prop="pid">
-                    <el-input v-model="addForm.pid" auto-complete="off"></el-input>
+                    <select @change="pData"
+                        v-model="selectData3">
+                        <option v-for='item in pData'
+                            :key="item.pid"
+                            :value="item">
+                            {{item.pid}}:{{item.pname}}
+                        </option>
+                    </select>
                 </el-form-item>
                 <el-form-item label="详细描述" prop="specification">
                     <el-input v-model="addForm.specification" auto-complete="off"></el-input>
@@ -167,13 +181,21 @@
                     uid5: '',
                     uid6: '',
                 },
-                selectAC:{},
+                selectData:{},
+                selectData1:{},
+                selectData2:{},
+                selectData3:{},
                 idx: -1,        // 记录当前编辑行数，从0开始计
                 addFormVisible:false,
                 editVisible: false,
                 form: {},
-                rules: {
-                    pmname: [{ required: true, message: '请输入名称', trigger: 'blur' }],
+                addFormRules: {
+                    aname: [{ required: true, message: '不能为空', trigger: 'blur' }],
+                    //aclass: [{ required: true, message: '不能为空', trigger: 'blur' }],
+                    num: [{ required: true, message: '不能为空', trigger: 'blur' }],
+                    budget: [{ required: true, message: '不能为空', trigger: 'blur' }],
+                    //pmname: [{ required: true, message: '不能为空', trigger: 'blur' }],
+                    //pid: [{ required: true, message: '不能为空', trigger: 'blur' }],
                 },
 
             };
@@ -197,7 +219,7 @@
             });
 
             this.$apis.getApprovalProcess().then(res =>{
-                this.pData = res.data.records;
+                this.pData = res.data;            //注意这块因为直接返回了list 所以没有records
             }).catch(err =>{
                 this.$message.error(err);
             });
@@ -212,28 +234,68 @@
                this.$apis.getPurchaseRequsetByA(this.query).then(res =>{
                     this.tableData = res.data.records;
                     this.pageTotal = res.data.total || 1;
+                    
+                    this.tableData.forEach(record => {
+                        if(record.rstate == 0)
+                        {
+                            record.rstate = "已通过";
+                        }
+                        else if(record.rstate == -1)
+                        {
+                            record.rstate = "已拒绝";
+                        }
+                        else
+                        {
+                            this.pData.forEach(process => {
+                                if(record.rstate == 1)
+                                    record.rstate = process.uid1 + "审核中";
+                                else if(record.rstate == 2)
+                                    record.rstate = process.uid2 + "审核中";
+                                else if(record.rstate == 3)
+                                    record.rstate = process.uid3 + "审核中";
+                                else if(record.rstate == 4)
+                                    record.rstate = process.uid4 + "审核中";
+                                else if(record.rstate == 5)
+                                    record.rstate = process.uid5 + "审核中";
+                                else if(record.rstate == 6)
+                                    record.rstate = process.uid6 + "审核中";
+                            });
+                        }
+                    });
+
                 }).catch(err =>{
                     this.$message.error(err);
                 });
             },
-
+            transport(process,rstate){
+                },
             addSubmit: function() {
+                console.log("到这了")
                 this.$refs.addForm.validate(valid => {
                     if (valid) {
                         this.$confirm("确认提交吗？", "提示", {}).then(() => {
                             this.addLoading = true;
-                            this.addForm.acid=this.selectAC.acid;
-                            this.addForm.aclass=this.selectAC.acid;
-                            let param = Object.assign({}, this.addForm);
+
+                            this.addForm.acid=this.selectData1.acid;
+                            this.addForm.aclass=this.selectData1.acname;
+                            this.addForm.pmid=this.selectData2.pmid;
+                            this.addForm.pmname=this.selectData2.pmname;
+
+                            this.addForm.pid=this.selectData3.pid;
+                            let user = this.$store.state.userInfo.user;
+                            this.addForm.uid=user.uid;
+                            this.addForm.uname=user.uname;
                             this.$apis.addPurchaseRequest(this.addForm).then(res => {
-                                this.addLoading = false;
+                                 this.addLoading = false;
                                 this.$message({
                                     message: "提交成功",
                                     type: "success"
                                 });
                                 this.$refs["addForm"].resetFields();
                                 this.addFormVisible = false;
-                                this.getResult(1);
+                            }).catch(err =>{
+                                this.$message.error("请输入正确的数据，或刷新后再试");
+                                this.addLoading = false;
                             });
                         });
                     }
