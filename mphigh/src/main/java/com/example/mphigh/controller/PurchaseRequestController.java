@@ -1,8 +1,10 @@
 package com.example.mphigh.controller;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.example.mphigh.entity.ApprovalProcess;
 import com.example.mphigh.entity.PurchaseRequest;
 import com.example.mphigh.result.Result;
+import com.example.mphigh.service.ApprovalProcessService;
 import com.example.mphigh.service.PurchaseRequestService;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,7 +28,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 public class PurchaseRequestController {
     @Autowired
     private PurchaseRequestService purchaseRequestService;
-
+    @Autowired
+    private ApprovalProcessService approvalProcessService;
     
     @PostMapping(value = "/add")
     public Result add(PurchaseRequest purchaseRequest) {
@@ -43,9 +46,28 @@ public class PurchaseRequestController {
         return purchaseRequestService.getByUid(uid,pageIndex,pageSize);
     }
     @PostMapping(value="/dicide")
-    public Result dicide(boolean dicded,String rid){  
+    public Result dicide(boolean dicide,String rid){  
         //更改状态
-
+        PurchaseRequest purchaseRequest = purchaseRequestService.getById(rid);
+        if(dicide == false)
+            purchaseRequest.setRstate(-1);
+        else{
+            ApprovalProcess approvalProcess = approvalProcessService.getById(purchaseRequest.getPid());
+            purchaseRequest.setRstate(purchaseRequest.getRstate()+1);
+            if(purchaseRequest.getRstate() == 2 && approvalProcess.getUid2().equals(""))
+                purchaseRequest.setRstate(0);
+            else if(purchaseRequest.getRstate() == 3 && approvalProcess.getUid3().equals(""))
+                purchaseRequest.setRstate(0);
+            else if(purchaseRequest.getRstate() == 4 && approvalProcess.getUid4().equals(""))
+                purchaseRequest.setRstate(0);
+            else if(purchaseRequest.getRstate() == 5 && approvalProcess.getUid5().equals(""))
+                purchaseRequest.setRstate(0);
+            else if(purchaseRequest.getRstate() == 6 && approvalProcess.getUid6().equals(""))
+                purchaseRequest.setRstate(0);
+            else if(purchaseRequest.getRstate() >= 7)
+                purchaseRequest.setRstate(0);
+        }
+        purchaseRequestService.updateById(purchaseRequest);
         return Result.success();
     }
     

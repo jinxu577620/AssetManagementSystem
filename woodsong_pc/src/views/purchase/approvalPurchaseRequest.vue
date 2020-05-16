@@ -3,15 +3,12 @@
         <div class="crumbs">
             <el-breadcrumb separator="/">
                 <el-breadcrumb-item>
-                    <i class="el-icon-lx-calendar"></i> 采购申请
+                    <i class="el-icon-lx-calendar"></i> 审批采购申请
                 </el-breadcrumb-item>
             </el-breadcrumb>
         </div>
 
         <div class="container">
-            <div class="handle-box">
-                <el-button type="primary" icon="el-icon-edit"  @click="handleAdd">新增</el-button>
-            </div>
             <el-table
                     :data="tableData"
                     border
@@ -34,6 +31,21 @@
                 <el-table-column prop="manufacturer" label="生产厂家" align="center" ></el-table-column>
                 
                 
+                <el-table-column label="操作" align="center" >
+                    <template slot-scope="scope">
+                        <p v-if="scope.row.rstate==$store.state.userInfo.user.uid+'审核中'">
+                            <el-button
+                                    type="text"
+                                    @click="handleAgree(scope.$index, scope.row)"
+                            >通过</el-button>
+                            <el-button
+                                    type="text"
+                                    class="red"
+                                    @click="handleRefuse(scope.$index, scope.row)"
+                            >拒绝</el-button>
+                        </p>
+                    </template>
+                </el-table-column>
             </el-table>
             <div class="pagination">
                 <el-pagination
@@ -46,62 +58,6 @@
                 ></el-pagination>
             </div>
         </div>
-
-        <!-- 编辑弹出框 -->
-        <el-dialog title="新增" :visible.sync="addFormVisible" :close-on-click-modal="false">
-            <el-form :model="addForm" :rules="addFormRules" ref="addForm" >
-                <el-form-item label="资产名称" prop="aname">
-                    <el-input v-model="addForm.aname" auto-complete="off"></el-input>
-                </el-form-item>
-                <el-form-item label="资产分类" prop="aclass">
-                    <select @change="aclassData"
-                        v-model="selectData1">
-                        <option v-for='item in aclassData'
-                            :key="item.acid"
-                            :value="item">
-                            {{item.acid}}:{{item.acname}}
-                        </option>
-                    </select>
-                </el-form-item>
-                <el-form-item label="数量" prop="num">
-                    <el-input v-model="addForm.num" auto-complete="off"></el-input>
-                </el-form-item>
-                <el-form-item label="预算" prop="budget">
-                    <el-input v-model="addForm.budget" auto-complete="off"></el-input>
-                </el-form-item>
-                <el-form-item label="采购方式名称" prop="pmname">
-                    <select @change="pmData"
-                        v-model="selectData2">
-                        <option v-for='item in pmData'
-                            :key="item.pmid"
-                            :value="item">
-                            {{item.pmid}}:{{item.pmname}}
-                        </option>
-                    </select>
-                </el-form-item>
-                <el-form-item label="采购流程编号" prop="pid">
-                    <select @change="pData"
-                        v-model="selectData3">
-                        <option v-for='item in pData'
-                            :key="item.pid"
-                            :value="item">
-                            {{item.pid}}:{{item.pname}}
-                        </option>
-                    </select>
-                </el-form-item>
-                <el-form-item label="详细描述" prop="specification">
-                    <el-input v-model="addForm.specification" auto-complete="off"></el-input>
-                </el-form-item>
-                <el-form-item label="生产厂家" prop="manufacturer">
-                    <el-input v-model="addForm.manufacturer" auto-complete="off"></el-input>
-                </el-form-item>
-            </el-form>
-            <div slot="footer" class="dialog-footer">
-            <el-button @click="addFormVisible = false">取消</el-button>
-            <el-button type="primary" @click="addSubmit" :loading="addLoading">提交</el-button>
-            </div>
-        </el-dialog>
-        
     </div>
 </template>
 
@@ -111,24 +67,9 @@
         data() {
             return {
                 query: {
-                    uid:'',
+                    aname:'',
                     pageIndex: 1,
                     pageSize: 15
-                },
-                addForm:{
-                    aname : "",     //输入
-                    aclass: "",     //选
-                    acid: "",       
-                    num: "",            //输入
-                    budget: "",         //输入
-                    uid: "",            //自动
-                    uname: "",      //自动
-                    pmid: "",       
-                    pmname: "",     //选
-                    rstate: 1,     //自动
-                    pid: "",        //选
-                    specification: "",  //输入
-                    manufacturer: "",   //输入
                 },
                 pageTotal: 0,
                 tableData: {
@@ -147,15 +88,6 @@
                     specification: "",  //输入
                     manufacturer: "",   //输入
                 },
-                
-                aclassData:{   //从这个里面选分类
-                    acid: "",
-                    acname: "",
-                },
-                pmData:{    //从这个里面选采购方式
-                    pmid: '',
-                    pmname: '',
-                },
                 pData:{       //从这个里面选流程
                     pid: '',
                     pname: '',
@@ -166,41 +98,13 @@
                     uid5: '',
                     uid6: '',
                 },
-                selectData1:{},
-                selectData2:{},
-                selectData3:{},
                 idx: -1,        // 记录当前编辑行数，从0开始计
                 addFormVisible:false,
                 editVisible: false,
-                form: {},
-                addFormRules: {
-                    aname: [{ required: true, message: '不能为空', trigger: 'blur' }],
-                    //aclass: [{ required: true, message: '不能为空', trigger: 'blur' }],
-                    num: [{ required: true, message: '不能为空', trigger: 'blur' }],
-                    budget: [{ required: true, message: '不能为空', trigger: 'blur' }],
-                    //pmname: [{ required: true, message: '不能为空', trigger: 'blur' }],
-                    //pid: [{ required: true, message: '不能为空', trigger: 'blur' }],
-                },
-
             };
         },
         created() {
             this.getData();
-            this.$apis.getassetClass({
-                acid:'',
-                acname: '',
-                pageSize: 100
-            },).then(res =>{
-                this.aclassData = res.data.records;
-            }).catch(err =>{
-                this.$message.error(err);
-            });
-  
-            this.$apis.getPurchaseMethod({pmid:'',pmname:'',pageSize: 100}).then(res =>{
-                this.pmData = res.data.records;
-            }).catch(err =>{
-                this.$message.error(err);
-            });
 
             this.$apis.getApprovalProcess().then(res =>{
                 this.pData = res.data;            //注意这块因为直接返回了list 所以没有records
@@ -215,11 +119,10 @@
         },
         methods: {
             async getData() {
-                let user = this.$store.state.userInfo.user;
-                this.query.uid = user.uid;
-                this.$apis.getPurchaseRequsetByUid(this.query).then(res =>{
+               this.$apis.getPurchaseRequsetByA(this.query).then(res =>{
                     this.tableData = res.data.records;
                     this.pageTotal = res.data.total || 1;
+                    
                     this.tableData.forEach(record => {
                         if(record.rstate == 0)
                         {
@@ -255,45 +158,30 @@
                     this.$message.error(err);
                 });
             },
-            addSubmit: function() {
-                this.$refs.addForm.validate(valid => {
-                    if (valid) {
-                        this.$confirm("确认提交吗？", "提示", {}).then(() => {
-                            this.addLoading = true;
-
-                            this.addForm.acid=this.selectData1.acid;
-                            this.addForm.aclass=this.selectData1.acname;
-                            this.addForm.pmid=this.selectData2.pmid;
-                            this.addForm.pmname=this.selectData2.pmname;
-
-                            this.addForm.pid=this.selectData3.pid;
-                            let user = this.$store.state.userInfo.user;
-                            this.addForm.uid=user.uid;
-                            this.addForm.uname=user.uname;
-                            this.$apis.addPurchaseRequest(this.addForm).then(res => {
-                                 this.addLoading = false;
-                                this.$message({
-                                    message: "提交成功",
-                                    type: "success"
-                                });
-                                this.$refs["addForm"].resetFields();
-                                this.addFormVisible = false;
-                            }).catch(err =>{
-                                this.$message.error("请输入正确的数据，或刷新后再试");
-                                this.addLoading = false;
-                            });
-                        });
-                    }
+            // 同意操作
+            async handleAgree(index, row) {
+                this.$apis.approvalDicide({rid:row.prid,dicide:true}).then(res =>{
+                    this.$message.success('审批成功');
+                }).catch(err =>{
+                    this.$message.error(err);
                 });
+                this.$router.go(0)
             },
-            handleAdd: function() {
-                this.addFormVisible = true;
-            },
-            
-            resetForm(formName) {
-                this.$refs[formName].resetFields();
-                this.editVisible = false;
-            },
+            //拒绝
+            async handleRefuse(index, row) {
+                this.$confirm('确定要拒绝吗？', '提示', {
+                    type: 'warning'
+                })
+                    .then(async () => {
+                        this.$apis.approvalDicide({rid:row.prid,dicide:false}).then(res =>{
+                            this.$message.success('拒绝成功');
+                        }).catch(err =>{
+                            this.$message.error(err);
+                        });
+                    })
+                    .catch(() => {});
+                    this.$router.go(0)
+            }
         }
     };
 </script>

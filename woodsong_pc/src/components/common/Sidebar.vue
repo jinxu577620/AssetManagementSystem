@@ -103,14 +103,14 @@ export default {
                             index: '/pendingDeleteOrders',
                             title: '验收申请'
                         },
-                        {
-                            index: '/deletedOrders',
-                            title: '查看审批状态'
-                        },
-                        {
-                            index: '/deletedOrders',
-                            title: '查看验收状态'
-                        }
+                        // {    //申请的同时就查看了
+                        //     index: '/purchaseRequest',
+                        //     title: '查看审批状态'
+                        // },
+                        // {
+                        //     index: '/deletedOrders',
+                        //     title: '查看验收状态'
+                        // }
                     ]
                 },
                 {
@@ -157,7 +157,7 @@ export default {
                     title: '资产采购审批',
                     subs: [
                         {
-                            index: '/shippedOrders',
+                            index: '/approvalPurchaseRequest',
                             title: '资产采购审批'
                         }
                     ]

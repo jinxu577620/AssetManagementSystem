@@ -51,6 +51,11 @@ const routes = [
                 meta: { title: '采购申请'}
             },
             {
+                path: '/approvalPurchaseRequest',
+                component: () => import('../views/purchase/approvalPurchaseRequest.vue'),
+                meta: { title: '审批采购申请'}
+            },
+            {
                 path: '/approvalProcess',
                 component: () => import('../views/process/approvalProcess.vue'),
                 meta: { title: '采购审批流程'}
@@ -61,36 +66,6 @@ const routes = [
                 meta: { title: '采购验收流程'}
             },
             
-            {
-                path: '/createOrders',
-                component: () => import('../views/orders/CreateOrders.vue'),
-                meta: { title: '创建订单'}
-            },
-            {
-                path: '/pendingApprovalOrders',
-                component: () => import('../views/orders/PendingApprovalOrders.vue'),
-                meta: { title: '待审批订单'}
-            },
-            {
-                path: '/pendingSendOrders',
-                component: () => import('../views/orders/PendingSendOrders.vue'),
-                meta: { title: '待发货订单'}
-            },
-            {
-                path: '/pendingDeleteOrders',
-                component: () => import('../views/orders/PendingDeleteOrders.vue'),
-                meta: { title: '待删除订单'}
-            },
-            {
-                path: '/deletedOrders',
-                component: () => import('../views/orders/DeletedOrders.vue'),
-                meta: { title: '已删除订单'}
-            },
-            {
-                path: '/pendingDeliverOrders',
-                component: () => import('../views/orders/PendingDeliverOrders.vue'),
-                meta: { title: '待发货订单'}
-            },
             {
                 path: '/DataAnalysis',
                 component: () => import('../views/Data/DataAnalysis.vue'),
@@ -111,27 +86,7 @@ const routes = [
                 component: () => import('../views/asset/ApprovaluseRequest.vue'),
                 meta: { title: '出库审批'}
             },
-            {
-                path: '/createCustomer',
-                component: () => import('../views/customer/CreateCustomer.vue'),
-                meta: { title: '创建客户'}
-            },
-            {
-                path: '/myCustomers',
-                component: () => import('../views/customer/MyCustomers.vue'),
-                meta: { title: '我的客户'}
-            },
-            {
-                path: '/commonCustomers',
-                component: () => import('../views/customer/CommonCustomers.vue'),
-                meta: { title: '客户池'}
-            },
-            {
-                path: '/allCustomers',
-                component: () => import('../views/customer/AllCustomers.vue'),
-                meta: {title: '所有客户', permission: true}
-            }
-            ,
+            
             {
                 path: '/403',
                 component: () => import(/* webpackChunkName: "403" */ '../views/403.vue'),

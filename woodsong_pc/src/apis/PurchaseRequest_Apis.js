@@ -17,7 +17,7 @@ const PurchaseRequest_Apis = {
     //审批同意或拒绝
     approvalDicide:{
         method:"post",
-        url:'/approval-process/dicide'
+        url:'/purchase-request/dicide'
     },
     //流程的也写这算了
     //审批流程
