@@ -55,7 +55,6 @@ public class AcceptProcessController {
     }
     @PostMapping(value = "/get")
     public Result get() {
-        System.out.println("daozhezs");
         return Result.success(acceptProcessService.list());
     }
 }

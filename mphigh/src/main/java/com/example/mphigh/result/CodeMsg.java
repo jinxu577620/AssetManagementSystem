@@ -32,7 +32,8 @@ public enum CodeMsg {
 	CAN_NOT_DELETE_USER(500220, "用户还有操作的订单，不能删除用户"),
 
 	GET_OSS_TOKEN_ERROR(500501, "OssToken获取失败"),
-
+	//上传文件处
+	UPLOAD_ERROR(500601,"文件上传失败")
 	;
 	private Integer code;
 	private String msg;
