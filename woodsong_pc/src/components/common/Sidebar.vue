@@ -95,22 +95,22 @@ export default {
                     index: '/createOrders',
                     title: '资产采购',
                     subs: [
-                        {
-                            index: '/purchaseRequest',
-                            title: '采购申请'
-                        },
-                        {
-                            index: '/pendingDeleteOrders',
-                            title: '验收申请'
-                        },
-                        // {    //申请的同时就查看了
+                        // {
                         //     index: '/purchaseRequest',
-                        //     title: '查看审批状态'
+                        //     title: '采购申请'
                         // },
                         // {
-                        //     index: '/deletedOrders',
-                        //     title: '查看验收状态'
-                        // }
+                        //     index: '/pendingDeleteOrders',
+                        //     title: ''
+                        // },
+                        {    //申请的同时就查看了
+                            index: '/purchaseRequest',
+                            title: '查看审批状态'
+                        },
+                        {
+                            index: '/acceptRequest',
+                            title: '查看验收状态'
+                        }
                     ]
                 },
                 {
@@ -123,7 +123,7 @@ export default {
                             title: '查看资产'
                         },
                         {
-                            index: '/pendingDeliverOrders',
+                            index: '/accept',
                             title: '资产验收'
                         },
                         {

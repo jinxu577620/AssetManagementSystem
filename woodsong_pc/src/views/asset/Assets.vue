@@ -32,9 +32,6 @@
                 </el-row>
             </div>
             <el-table
-                :row-style="{height:'7px'}"
-                :cell-style="{padding:'0px'}"
-                style="font-size: 10px"
                 :data="tableData"
                 border
                 class="table"
@@ -42,7 +39,6 @@
                 :row-class-name="tableRowClassName"
                 
             >
-      
                 <el-table-column prop="aid" label="资产编号" align="center"></el-table-column>
                 <el-table-column prop="aname" label="名称" width="70" align="center"></el-table-column>
                 <el-table-column prop="acname" label="资产类别" width="90" align="center"></el-table-column>
@@ -56,8 +52,9 @@
                 <el-table-column prop="astate" label="状态" width="100" align="center">
                     <template slot-scope="scope">
                         <p>{{scope.row.astate}} 
-                            <el-button @click="userRequset(scope.row)" type="text" size="small">申请</el-button>
-                        </p>
+                            <p v-if="scope.row.astate=='闲置'">
+                                <el-button @click="userRequset(scope.row)" type="text" size="small">申请</el-button>
+                            </p>
                     </template>
                 </el-table-column>
                 <el-table-column prop="etime" label="报废时间" width="100" align="center"></el-table-column>
@@ -169,18 +166,20 @@ export default {
             else{
                 var user = this.$store.state.userInfo.user;
                 var reason = prompt("请输入申请理由");
-                this.get.uid = user.uid;
-                this.get.uname = user.uname;
-                this.get.aid = row.aid;
-                this.get.aname = row.aname;
-                this.get.ause = reason;
-                this.get.department = user.department;
-                this.$apis.useRequest(this.get).then(res =>{
-                    if(res.success==true)
-                        alert("申请成功，等待审批中")
-                }).catch(err =>{
-                    this.$message.error(err);
-                });
+                if(reason||reason==''){
+                    this.get.uid = user.uid;
+                    this.get.uname = user.uname;
+                    this.get.aid = row.aid;
+                    this.get.aname = row.aname;
+                    this.get.ause = reason;
+                    this.get.department = user.department;
+                    this.$apis.useRequest(this.get).then(res =>{
+                        if(res.success==true)
+                            alert("申请成功，等待审批中")
+                    }).catch(err =>{
+                        this.$message.error(err);
+                    });
+                }
             }
         },
         // 触发搜索按钮

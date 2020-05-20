@@ -11,9 +11,6 @@
         <div class="container">
             
             <el-table
-                :row-style="{height:'7px'}"
-                :cell-style="{padding:'0px'}"
-                style="font-size: 10px"
                 :data="tableData"
                 border
                 class="table"
@@ -109,27 +106,6 @@ export default {
             });
         },
 
-        // 申请物资
-        async userRequset(row){
-            if(row.astate!="闲置")
-                alert("此物资不能申请！");
-            else{
-                var user = this.$store.state.userInfo.user;
-                var reason = prompt("请输入申请理由");
-                this.get.uid = user.uid;
-                this.get.uname = user.uname;
-                this.get.aid = row.aid;
-                this.get.aname = row.aname;
-                this.get.ause = reason;
-                this.get.department = user.department;
-                this.$apis.useRequest(this.get).then(res =>{
-                    if(res.success==true)
-                        alert("申请成功，等待审批中")
-                }).catch(err =>{
-                    this.$message.error(err);
-                });
-            }
-        },
        
         //按状态筛选
         filterHandler(value, row, column) {

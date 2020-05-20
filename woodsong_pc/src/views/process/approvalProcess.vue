@@ -12,9 +12,7 @@
                 <el-button type="primary" icon="el-icon-edit"  @click="handleAdd">新增</el-button>
             </div>
             <el-table
-                :row-style="{height:'7px'}"
-                :cell-style="{padding:'0px'}"
-                style="font-size: 10px"
+                
                 :data="tableData"
                 border
                 stripe

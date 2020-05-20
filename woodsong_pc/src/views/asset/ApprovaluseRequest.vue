@@ -11,9 +11,7 @@
         <div class="container">
             
             <el-table
-                :row-style="{height:'7px'}"
-                :cell-style="{padding:'0px'}"
-                style="font-size: 10px"
+                
                 :data="tableData"
                 border
                 class="table"

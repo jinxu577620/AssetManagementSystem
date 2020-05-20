@@ -22,7 +22,7 @@ public class AcceptRequest {
 
     private static final long serialVersionUID = 1L;
 
-    @TableId(value = "rid", type = IdType.AUTO)
+    @TableId(value = "rid")
     private Integer rid;
 
     private String aname;

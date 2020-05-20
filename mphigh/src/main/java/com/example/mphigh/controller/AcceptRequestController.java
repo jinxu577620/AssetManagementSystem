@@ -1,10 +1,16 @@
 package com.example.mphigh.controller;
 
+import java.io.BufferedInputStream;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.OutputStream;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
+
+import javax.servlet.http.HttpServletResponse;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.example.mphigh.entity.AcceptProcess;
@@ -39,42 +45,74 @@ import org.springframework.web.multipart.MultipartFile;
 public class AcceptRequestController {
     @Autowired
     private AcceptRequestService acceptRequestService;
+    @Autowired
     private AcceptProcessService acceptProcessService;
+    @Autowired
     private PurchaseRequestService purchaseRequestService;
+    @Autowired
     private AssetService assetService;
+
+
     @PostMapping("/upload")
     @ResponseBody
-    public Result upload(@RequestParam("file") MultipartFile file,String rid) {
+    public Result upload(@RequestParam("file") MultipartFile file) {
         if (file.isEmpty()) {
             return Result.error(CodeMsg.UPLOAD_ERROR);
         }
-
+        
         String fileName = file.getOriginalFilename();
-        String filePath = "/temp/" + rid;
-        File dest = new File(filePath + fileName);
+        String filePath = "./files/";
+        File dest = new File(new File(filePath).getAbsolutePath()+ "/" + fileName);
+        System.out.println(dest);
+        //File dest = new File(filePath + fileName);
+        if (!dest.getParentFile().exists()) { 
+            dest.getParentFile().mkdirs();
+        }
         try {
             file.transferTo(dest);
-            return Result.success(filePath + fileName);
+            
+            return Result.success(dest.getAbsolutePath());
         } catch (IOException e) {
+            System.out.println(e);
         }
+        System.out.println("在这失败1");
         return Result.error(CodeMsg.UPLOAD_ERROR);
     }
+    @RequestMapping("/download")
+    public void downexcel(HttpServletResponse res,String name){
+        System.out.println("文件下载功能==");
+        String fileName = name;
+        res.setHeader("content-type", "application/octet-stream");
+        res.setContentType("application/octet-stream");
+        res.setHeader("Content-Disposition", "attachment;filename=" + fileName);
+        byte[] buff = new byte[2048];
+        BufferedInputStream bis = null;
+        OutputStream os = null;
+        try {
+            os = res.getOutputStream();
+            bis = new BufferedInputStream(new FileInputStream(new File("./files/"+fileName)));
+            int i = bis.read(buff);
+            while (i != -1) {
+                os.write(buff, 0, buff.length);
+                os.flush();
+                i = bis.read(buff);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            if (bis != null) {
+                try {
+                    bis.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        System.out.println("success");
+    }
+
     @PostMapping(value = "/add")
     public Result add(AcceptRequest acceptRequest) {
-        //先加构造函数
-        /*
-        rid   要跟采购申请的一样
-        aname   跟采购申请一样
-        acid    跟采购申请一样
-        num      输入
-        price   输入
-        annex   其它地方实际处理  这里给个名字或者路径
-        supplier  输入
-        evaluate    输入
-        astate      自动
-        pid         选择
-        manfacturer 输入
-        */
         acceptRequestService.save(acceptRequest);
         return Result.success();
     }
@@ -85,17 +123,41 @@ public class AcceptRequestController {
     @PostMapping(value = "/getByUid")
     public Result getByUid(String uid,Integer pageIndex, Integer pageSize) {
         IPage<PurchaseRequest> purchaseRequestIpage = acceptRequestService.getByUid(uid,pageIndex,pageSize);
-        List<AcceptRequest> acceptRequestList = Arrays.asList();
+        List<AcceptRequest> acceptRequestList = new ArrayList<>();
+        //System.out.println(2);
         for(PurchaseRequest purchaseRequest: purchaseRequestIpage.getRecords())
-            if(uid.equals(purchaseRequest.getUid()))
+            if(uid.equals(purchaseRequest.getUid())&&acceptRequestService.getById(purchaseRequest.getPrid())!=null)
                 acceptRequestList.add(acceptRequestService.getById(purchaseRequest.getPrid()));
         return Result.success(acceptRequestList);
     }
-    @PostMapping(value="/dicide")
-    public Result dicide(boolean dicide,String rid,Date eDate, String place){
+    @PostMapping(value="/come")
+    public Result dicide(String rid,Date eDate, String place){
         //更改状态
         AcceptRequest acceptRequest = acceptRequestService.getById(rid);
         PurchaseRequest purchaseRequest = purchaseRequestService.getById(rid);
+        acceptRequestService.updateById(acceptRequest);
+        Asset asset = new Asset();
+        asset.setAname(purchaseRequest.getAname());
+        asset.setAcid(purchaseRequest.getAcid());
+        asset.setAcname(purchaseRequest.getAclass());
+        asset.setNum(acceptRequest.getNum());
+        asset.setStime(new Date()); //自动
+        asset.setPrice(acceptRequest.getPrice());
+        asset.setAstate("闲置");
+        asset.setEtime(eDate);
+        asset.setAnnex(acceptRequest.getAnnex());
+        asset.setSupplier(acceptRequest.getSupplier());
+        asset.setEvaluate(acceptRequest.getEvaluate());
+        asset.setManufacturer(purchaseRequest.getManufacturer());
+        asset.setPlace(place);
+        assetService.save(asset);
+        return Result.success();
+    }
+    @PostMapping(value="/dicide")
+    public Result dicide(boolean dicide,String rid){
+        //更改状态
+        AcceptRequest acceptRequest = acceptRequestService.getById(rid);
+       
         if(dicide == false)
             acceptRequest.setAstate(-1);
         else{
@@ -113,23 +175,9 @@ public class AcceptRequestController {
                 acceptRequest.setAstate(0);
             else if(acceptRequest.getAstate() >= 7)
                 acceptRequest.setAstate(0);
+            
         }
         acceptRequestService.updateById(acceptRequest);
-        Asset asset = new Asset();
-        asset.setAname(purchaseRequest.getAname());
-        asset.setAcid(purchaseRequest.getAcid());
-        asset.setAcname(purchaseRequest.getAclass());
-        asset.setNum(acceptRequest.getNum());
-        asset.setStime(new Date()); //自动
-        asset.setPrice(acceptRequest.getPrice());
-        asset.setAstate("闲置");
-        asset.setEtime(eDate);
-        asset.setAnnex(acceptRequest.getAnnex());
-        asset.setSupplier(acceptRequest.getSupplier());
-        asset.setEvaluate(acceptRequest.getEvaluate());
-        asset.setManufacturer(purchaseRequest.getManufacturer());
-        asset.setPlace(place);
-        assetService.save(asset);
         return Result.success();
     }
 }

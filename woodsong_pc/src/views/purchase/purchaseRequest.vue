@@ -32,7 +32,16 @@
                 <el-table-column prop="pid" label="采购流程编号" align="center" ></el-table-column>
                 <el-table-column prop="specification" label="详细描述" align="center" ></el-table-column>
                 <el-table-column prop="manufacturer" label="生产厂家" align="center" ></el-table-column>
-                
+                <el-table-column label="操作" align="center" >
+                    <template slot-scope="scope">
+                        <p v-if="scope.row.rstate=='已通过'">
+                            <el-button
+                                    type="text"
+                                    @click="handleRequest(scope.$index, scope.row)"
+                            >验收申请</el-button>
+                        </p>
+                    </template>
+                </el-table-column>
                 
             </el-table>
             <div class="pagination">
@@ -101,6 +110,53 @@
             <el-button type="primary" @click="addSubmit" :loading="addLoading">提交</el-button>
             </div>
         </el-dialog>
+        <!-- 编辑验收申请弹出框 -->
+        <el-dialog title="验收申请" :visible.sync="addFormVisible1" :close-on-click-modal="false">
+            <el-form :model="addForm1" :rules="addFormRules" ref="addForm1" >
+                <el-form-item label="数量" prop="num">
+                    <el-input v-model="addForm1.num" auto-complete="off"></el-input>
+                </el-form-item>
+                <el-form-item label="价格" prop="price">
+                    <el-input v-model="addForm1.price" auto-complete="off"></el-input>
+                </el-form-item>
+                <el-form-item label="附件" prop="annex">
+                    <el-upload
+                        class="upload-demo"
+                        action = 'http://localhost:8080/accept-request/upload'
+                        :before-upload="beforeUpload"
+                        :on-preview="handlePreview"
+                        :on-remove="handleRemove"
+                        
+                        multiple
+                        :limit="1"
+                        :on-exceed="handleExceed"
+                        :file-list="fileList">
+                        <el-button size="small" type="primary">点击上传</el-button>
+                        <div slot="tip" class="el-upload__tip">只能上传一个文件，且不超过2M</div>
+                    </el-upload>
+                </el-form-item>
+                <el-form-item label="供货商" prop="supplier">
+                    <el-input v-model="addForm1.supplier" auto-complete="off"></el-input>
+                </el-form-item>
+                <el-form-item label="评价" prop="evaluate">
+                    <el-input v-model="addForm1.evaluate" auto-complete="off"></el-input>
+                </el-form-item>
+                <el-form-item label="验收流程编号" prop="pid">
+                    <select @change="pData1"
+                        v-model="selectData4">
+                        <option v-for='item in pData1'
+                            :key="item.pid"
+                            :value="item">
+                            {{item.pid}}:{{item.pname}}
+                        </option>
+                    </select>
+                </el-form-item>
+            </el-form>
+            <div slot="footer" class="dialog-footer">
+            <el-button @click="addFormVisible1 = false">取消</el-button>
+            <el-button type="primary" @click="addSubmit1" :loading="addLoading">提交</el-button>
+            </div>
+        </el-dialog>
         
     </div>
 </template>
@@ -130,6 +186,20 @@
                     specification: "",  //输入
                     manufacturer: "",   //输入
                 },
+                addForm1:{
+                    rid: "",   //要跟采购申请的一样
+                    aname: "",   //跟采购申请一样
+                    acid: "",    //跟采购申请一样
+                    num: "",      //输入
+                    price: "",   //输入
+                    annex: "",   //其它地方实际处理  这里给个名字或者路径
+                    supplier: "",  //输入
+                    evaluate: "",    //输入
+                    astate: "",      //自动
+                    pid: "",         //选择
+                    manufacturer: "", //输入
+                },
+                fileList: [],
                 pageTotal: 0,
                 tableData: {
                     prid: "",      //自动
@@ -166,17 +236,31 @@
                     uid5: '',
                     uid6: '',
                 },
+                pData1:{       //从这个里面选流程
+                    pid: '',
+                    pname: '',
+                    uid1: '',
+                    uid2: '',
+                    uid3: '',
+                    uid4: '',
+                    uid5: '',
+                    uid6: '',
+                },
                 selectData1:{},
                 selectData2:{},
                 selectData3:{},
+                selectData4:{},
                 idx: -1,        // 记录当前编辑行数，从0开始计
                 addFormVisible:false,
+                addFormVisible1:false,
                 editVisible: false,
                 form: {},
                 addFormRules: {
                     aname: [{ required: true, message: '不能为空', trigger: 'blur' }],
                     //aclass: [{ required: true, message: '不能为空', trigger: 'blur' }],
                     num: [{ required: true, message: '不能为空', trigger: 'blur' }],
+                    
+                    price: [{ required: true, message: '不能为空', trigger: 'blur' }],
                     budget: [{ required: true, message: '不能为空', trigger: 'blur' }],
                     //pmname: [{ required: true, message: '不能为空', trigger: 'blur' }],
                     //pid: [{ required: true, message: '不能为空', trigger: 'blur' }],
@@ -195,7 +279,7 @@
             }).catch(err =>{
                 this.$message.error(err);
             });
-  
+
             this.$apis.getPurchaseMethod({pmid:'',pmname:'',pageSize: 100}).then(res =>{
                 this.pmData = res.data.records;
             }).catch(err =>{
@@ -204,6 +288,11 @@
 
             this.$apis.getApprovalProcess().then(res =>{
                 this.pData = res.data;            //注意这块因为直接返回了list 所以没有records
+            }).catch(err =>{
+                this.$message.error(err);
+            });
+            this.$apis.getAcceptProcess().then(res =>{
+                this.pData1 = res.data;            //注意这块因为直接返回了list 所以没有records
             }).catch(err =>{
                 this.$message.error(err);
             });
@@ -255,6 +344,9 @@
                     this.$message.error(err);
                 });
             },
+            beforeUpload(file) {
+                this.addForm1.annex = file.name;
+            },
             addSubmit: function() {
                 this.$refs.addForm.validate(valid => {
                     if (valid) {
@@ -286,6 +378,30 @@
                     }
                 });
             },
+            addSubmit1: function() {
+                this.$refs.addForm1.validate(valid => {
+                    if (valid) {
+                        this.$confirm("确认提交吗？", "提示", {}).then(() => {
+                            this.addLoading = true;
+                            this.addForm1.pid=this.selectData4.pid;
+                            this.$apis.addAcceptRequest(this.addForm1).then(res => {
+                                 this.addLoading = false;
+                                this.$message({
+                                    message: "提交成功",
+                                    type: "success"
+                                });
+                                this.$refs["addForm1"].resetFields();
+                                this.addFormVisible1 = false;
+                                this.$router.go(0)
+                            }).catch(err =>{
+                                this.$message.error("请输入正确的数据，或刷新后再试,并注意不要重复提交");
+                                this.addLoading = false;
+                            });
+                            
+                        });
+                    }
+                });
+            },
             handleAdd: function() {
                 this.addFormVisible = true;
             },
@@ -294,6 +410,15 @@
                 this.$refs[formName].resetFields();
                 this.editVisible = false;
             },
+            handleRequest: function(index,row){
+                this.addForm1.rid = row.prid;
+                this.addForm1.aname = row.aname;
+                this.addForm1.acid = row.acid;
+                this.addForm1.manufacturer = row.manufacturer
+                this.addForm1.astate = 1;
+                this.addFormVisible1 = true;
+
+            }
         }
     };
 </script>

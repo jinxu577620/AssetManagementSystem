@@ -8,6 +8,7 @@ const routes = [
         path: '/',
         redirect: '/dashboard'
     },
+    
     {
         path: '/',
         component: () => import('../components/common/Home.vue'),
@@ -65,7 +66,16 @@ const routes = [
                 component: () => import('../views/process/acceptProcess.vue'),
                 meta: { title: '采购验收流程'}
             },
-            
+            {
+                path: '/acceptRequest',
+                component: () => import('../views/accept/acceptRequest.vue'),
+                meta: { title: '采购验收流程'}
+            },
+            {
+                path: '/accept',
+                component: () => import('../views/accept/accept.vue'),
+                meta: { title: '采购验收流程'}
+            },
             {
                 path: '/DataAnalysis',
                 component: () => import('../views/Data/DataAnalysis.vue'),

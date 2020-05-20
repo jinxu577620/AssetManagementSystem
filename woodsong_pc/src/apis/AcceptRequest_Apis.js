@@ -1,0 +1,31 @@
+const AcceptRequest_Apis = {
+    //查看可处理的采购申请
+    getAcceptRequsetByA:{
+        method:"post",
+        url:'/accept-request/getByA'
+    },
+    //查看审批状态
+    getAcceptRequsetByUid:{
+        method:"post",
+        url:'/accept-request/getByUid'
+    },
+    //申请
+    addAcceptRequest:{
+        method:"post",
+        url:'/accept-request/add'
+    },
+    //审批同意或拒绝
+    AcceptDicide:{
+        method:"post",
+        url:'/accept-request/dicide'
+    },
+    upload:{
+        method:"post",
+        url:'/accept-request/upload'
+    },
+    come:{
+        method:"post",
+        url:'/accept-request/come'
+    }
+}
+export default AcceptRequest_Apis
