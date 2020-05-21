@@ -1,6 +1,5 @@
 <template>
     <div id="reports">
-
         <el-row>
             <el-col :span="12">
                 <!-- Elemenet组件 阴影卡片 -->
@@ -15,10 +14,6 @@
                 </el-card>
             </el-col>
         </el-row>
-        <div>
-            <div id='code'></div>
-            <canvas id="canvas"></canvas>
-        </div>
     </div>
 
 
@@ -26,17 +21,15 @@
 <script>
     // 引入ECharts
     import echarts from 'echarts';
-    import QRCode from 'qrcode'
     export default {
         //写了name方便在Vue Devtools谷歌插件应用内找到对应的组件
         name: "DataAnalysis",
-        components:{
-            QRCode: QRCode
-        },
         data() {
             return {
                 xData:[],
                 yData:[],
+                x2Data:[],
+                y2Data:[],
                 codes:''
             }
         },
@@ -45,23 +38,14 @@
                 this.useqrcode()
         },
         methods:{
-            useqrcode(){
-                var canvas = document.getElementById('canvas')
-
-                QRCode.toCanvas(canvas, 'http://www.baidu.com', function (error) {
-
-                    if (error) console.error(error)
-
-                    console.log('success!');
-
-                })
-
-            },
             async showchart(){
                 this.$apis.getAssetData().then(response =>{
                     this.xData=response.data.department;
                     this.yData=response.data.count;
+                    this.x2Data=response.data.assetClass;
+                    this.y2Data=response.data.assetCont;
                     this.charts();
+                    this.charts1();
                 }).catch(err =>{
                     this.$message.error(err);
                 });
@@ -93,8 +77,34 @@
                     }]
                 });
 
+            },
+            charts1(){
+                // 基于准备好的dom，初始化echarts实例
+                let  myChart = echarts.init(document.querySelector('.echarts-trend'));
+                myChart.setOption({
+                    //添加标题
+                    title: {
+                        text: '资产类别占比'
+                    },
+                    //添加小贴士
+                    tooltip: {},
+                    //横坐标
+                    xAxis: {
+                        type:'category',
+                        data: this.x2Data
+                    },
+                    //纵坐标
+                    yAxis: {
+                        type:'value'
+                    },
+                    //在series属性中，添加图形类型以及数据
+                    series: [{
+                        data:this.y2Data,
+                        type:'line'
+                    }]
+                });
             }
-            }
+        }
     };
 </script>
 <style lang="scss">
@@ -102,6 +112,81 @@
 
     }
 </style>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

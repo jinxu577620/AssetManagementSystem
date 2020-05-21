@@ -45,5 +45,22 @@ public class AcceptRequest {
 
     private String manufacturer;
 
+    public AcceptRequest(Integer rid, String aname, Integer acid, Integer num, Double price, String annex,
+            String supplier, String evaluate, Integer astate, Integer pid, String manufacturer) {
+        this.rid = rid;
+        this.aname = aname;
+        this.acid = acid;
+        this.num = num;
+        this.price = price;
+        this.annex = annex;
+        this.supplier = supplier;
+        this.evaluate = evaluate;
+        this.astate = astate;
+        this.pid = pid;
+        this.manufacturer = manufacturer;
+    }
+    public AcceptRequest() {
+        
+    }
 
 }

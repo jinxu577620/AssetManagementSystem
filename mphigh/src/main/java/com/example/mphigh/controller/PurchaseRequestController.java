@@ -70,6 +70,4 @@ public class PurchaseRequestController {
         purchaseRequestService.updateById(purchaseRequest);
         return Result.success();
     }
-    
-
 }
