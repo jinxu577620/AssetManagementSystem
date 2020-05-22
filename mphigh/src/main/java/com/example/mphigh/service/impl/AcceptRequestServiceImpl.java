@@ -30,10 +30,7 @@ import org.springframework.stereotype.Service;
 public class AcceptRequestServiceImpl extends ServiceImpl<AcceptRequestMapper, AcceptRequest> implements AcceptRequestService {
     @Autowired
     AcceptRequestMapper acceptRequestMapper;
-<<<<<<< HEAD
     @Autowired
-=======
->>>>>>> e88fd0720e3fb0fb97bdf4115f8c87cdb01f5e48
     PurchaseRequestMapper purchaseRequestMapper;
     
     @Override

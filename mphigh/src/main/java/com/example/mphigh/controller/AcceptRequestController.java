@@ -1,25 +1,17 @@
 package com.example.mphigh.controller;
 
-<<<<<<< HEAD
 import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.util.ArrayList;
-=======
-import java.io.File;
-import java.io.IOException;
->>>>>>> e88fd0720e3fb0fb97bdf4115f8c87cdb01f5e48
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
-<<<<<<< HEAD
 import javax.servlet.http.HttpServletResponse;
 
-=======
->>>>>>> e88fd0720e3fb0fb97bdf4115f8c87cdb01f5e48
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.example.mphigh.entity.AcceptProcess;
 import com.example.mphigh.entity.AcceptRequest;
@@ -53,7 +45,6 @@ import org.springframework.web.multipart.MultipartFile;
 public class AcceptRequestController {
     @Autowired
     private AcceptRequestService acceptRequestService;
-<<<<<<< HEAD
     @Autowired
     private AcceptProcessService acceptProcessService;
     @Autowired
@@ -122,44 +113,6 @@ public class AcceptRequestController {
 
     @PostMapping(value = "/add")
     public Result add(AcceptRequest acceptRequest) {
-=======
-    private AcceptProcessService acceptProcessService;
-    private PurchaseRequestService purchaseRequestService;
-    private AssetService assetService;
-    @PostMapping("/upload")
-    @ResponseBody
-    public Result upload(@RequestParam("file") MultipartFile file,String rid) {
-        if (file.isEmpty()) {
-            return Result.error(CodeMsg.UPLOAD_ERROR);
-        }
-
-        String fileName = file.getOriginalFilename();
-        String filePath = "/temp/" + rid;
-        File dest = new File(filePath + fileName);
-        try {
-            file.transferTo(dest);
-            return Result.success(filePath + fileName);
-        } catch (IOException e) {
-        }
-        return Result.error(CodeMsg.UPLOAD_ERROR);
-    }
-    @PostMapping(value = "/add")
-    public Result add(AcceptRequest acceptRequest) {
-        //先加构造函数
-        /*
-        rid   要跟采购申请的一样
-        aname   跟采购申请一样
-        acid    跟采购申请一样
-        num      输入
-        price   输入
-        annex   其它地方实际处理  这里给个名字或者路径
-        supplier  输入
-        evaluate    输入
-        astate      自动
-        pid         选择
-        manfacturer 输入
-        */
->>>>>>> e88fd0720e3fb0fb97bdf4115f8c87cdb01f5e48
         acceptRequestService.save(acceptRequest);
         return Result.success();
     }
@@ -170,7 +123,6 @@ public class AcceptRequestController {
     @PostMapping(value = "/getByUid")
     public Result getByUid(String uid,Integer pageIndex, Integer pageSize) {
         IPage<PurchaseRequest> purchaseRequestIpage = acceptRequestService.getByUid(uid,pageIndex,pageSize);
-<<<<<<< HEAD
         List<AcceptRequest> acceptRequestList = new ArrayList<>();
         //System.out.println(2);
         for(PurchaseRequest purchaseRequest: purchaseRequestIpage.getRecords())
@@ -206,19 +158,6 @@ public class AcceptRequestController {
         //更改状态
         AcceptRequest acceptRequest = acceptRequestService.getById(rid);
        
-=======
-        List<AcceptRequest> acceptRequestList = Arrays.asList();
-        for(PurchaseRequest purchaseRequest: purchaseRequestIpage.getRecords())
-            if(uid.equals(purchaseRequest.getUid()))
-                acceptRequestList.add(acceptRequestService.getById(purchaseRequest.getPrid()));
-        return Result.success(acceptRequestList);
-    }
-    @PostMapping(value="/dicide")
-    public Result dicide(boolean dicide,String rid,Date eDate, String place){
-        //更改状态
-        AcceptRequest acceptRequest = acceptRequestService.getById(rid);
-        PurchaseRequest purchaseRequest = purchaseRequestService.getById(rid);
->>>>>>> e88fd0720e3fb0fb97bdf4115f8c87cdb01f5e48
         if(dicide == false)
             acceptRequest.setAstate(-1);
         else{
@@ -236,29 +175,9 @@ public class AcceptRequestController {
                 acceptRequest.setAstate(0);
             else if(acceptRequest.getAstate() >= 7)
                 acceptRequest.setAstate(0);
-<<<<<<< HEAD
             
         }
         acceptRequestService.updateById(acceptRequest);
-=======
-        }
-        acceptRequestService.updateById(acceptRequest);
-        Asset asset = new Asset();
-        asset.setAname(purchaseRequest.getAname());
-        asset.setAcid(purchaseRequest.getAcid());
-        asset.setAcname(purchaseRequest.getAclass());
-        asset.setNum(acceptRequest.getNum());
-        asset.setStime(new Date()); //自动
-        asset.setPrice(acceptRequest.getPrice());
-        asset.setAstate("闲置");
-        asset.setEtime(eDate);
-        asset.setAnnex(acceptRequest.getAnnex());
-        asset.setSupplier(acceptRequest.getSupplier());
-        asset.setEvaluate(acceptRequest.getEvaluate());
-        asset.setManufacturer(purchaseRequest.getManufacturer());
-        asset.setPlace(place);
-        assetService.save(asset);
->>>>>>> e88fd0720e3fb0fb97bdf4115f8c87cdb01f5e48
         return Result.success();
     }
 }
