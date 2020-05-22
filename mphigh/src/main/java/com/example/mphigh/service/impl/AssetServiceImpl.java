@@ -39,33 +39,43 @@ public class AssetServiceImpl extends ServiceImpl<AssetMapper, Asset> implements
         List<Asset>list=assetMapper.selectList(queryWrapper);
         //用来存储对应的department和设备数量
         Map<String,Integer>map1=new HashMap<>();
+        Map<String,Integer>map2=new HashMap<>();
         for (Asset a:list) {
             System.out.println(a.getDepartment());
             map1.put(a.getDepartment(),map1.getOrDefault(a.getDepartment(),0)+a.getNum());
+            map2.put(a.getAcname(),map2.getOrDefault(a.getAcname(),0)+a.getNum());
         }
         List<String>department=new ArrayList<>();
         List<Integer>count=new ArrayList<>();
+        List<String>assetClass=new ArrayList<>();
+        List<Integer>assetCont=new ArrayList<>();
         for (String str:map1.keySet()) {
             department.add(str);
             count.add(map1.get(str));
         }
+        for (String str:map2.keySet()) {
+            assetClass.add(str);
+            assetCont.add(map2.get(str));
+        }
         Map<String,Object> map=new HashMap<>();
         map.put("department",department);
         map.put("count",count);
+        map.put("assetClass",assetClass);
+        map.put("assetCont",assetCont);
         return map;
     }
 
     @Override
     public Result getAssets(String aname, String acname, String uid,
-    String department,String astate,Integer pageIndex,Integer pageSize) {
+                            String department,String astate,Integer pageIndex,Integer pageSize) {
         Page<Asset> page = new Page<>(pageIndex,pageSize);
         System.out.println(aname+"dd"+acname);
         IPage<Asset> assetIPage = assetMapper.selectPage(page, new QueryWrapper<Asset>()
-        .like(StringUtils.isNotEmpty(aname),"aname",aname)
-        .like(StringUtils.isNotEmpty(acname),"acname",acname)
-        .like(StringUtils.isNotEmpty(uid),"uid",uid)
-        .like(StringUtils.isNotEmpty(department),"department", department)
-        .like(StringUtils.isNotEmpty(astate),"astate",astate));
+                .like(StringUtils.isNotEmpty(aname),"aname",aname)
+                .like(StringUtils.isNotEmpty(acname),"acname",acname)
+                .like(StringUtils.isNotEmpty(uid),"uid",uid)
+                .like(StringUtils.isNotEmpty(department),"department", department)
+                .like(StringUtils.isNotEmpty(astate),"astate",astate));
         return Result.success(assetIPage);
 
     }

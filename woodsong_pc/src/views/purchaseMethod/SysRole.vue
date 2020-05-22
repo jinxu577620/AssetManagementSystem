@@ -21,7 +21,8 @@
                     ref="multipleTable"
                     header-cell-class-name="table-header"
             >
-                <el-table-column type="index" width="50" align="center"></el-table-column>
+                <el-table-column  type="index" width="50" align="center">
+                </el-table-column>
                 <el-table-column prop="pmid" label="编号" width="80" align="center" ></el-table-column>
                 <el-table-column prop="pmname" label="采购方式的名称" align="center" ></el-table-column>
                 <el-table-column label="操作" align="center" width="220">
@@ -49,7 +50,10 @@
                         :total="pageTotal"
                         @current-change="handlePageChange"
                 ></el-pagination>
+
             </div>
+
+
         </div>
         <!-- 编辑弹出框 -->
         <el-dialog title="编辑" :visible.sync="editVisible" width="780px">
@@ -85,6 +89,7 @@
         name: 'SysRole',
         data() {
             return {
+                flag:true,
                 query: {
                     pmid:'',
                     pmname: '',

@@ -39,6 +39,13 @@
                 :row-class-name="tableRowClassName"
                 
             >
+                <el-table-column  type="index"  v-model="cnt" width="50" align="center"></el-table-column>
+                <el-table-column label="二维码" width="150" align="center" >
+                    <template slot-scope="scope">
+                        <el-button type="text"  @click="createMa(scope.$index)">生成二维码</el-button>
+                    </template>
+                </el-table-column>
+
                 <el-table-column prop="aid" label="资产编号" align="center"></el-table-column>
                 <el-table-column prop="aname" label="名称" width="70" align="center"></el-table-column>
                 <el-table-column prop="acname" label="资产类别" width="90" align="center"></el-table-column>
@@ -78,12 +85,17 @@
                 ></el-pagination>
             </div>
         </div>
+        <el-dialog align="center" title="生成二维码" width="250px" :visible.sync="addFormVisible" :close-on-click-modal="false">
+            <div align="center">
+                <canvas id="canvas"></canvas>
+            </div>
+        </el-dialog>
     </div>
 </template>
 
 <script>
     import moment from 'moment'   // 日期处理类库
- 
+    import QRCode from 'qrcode'
 export default {
     name: 'AssetList',
     data() {
@@ -122,12 +134,19 @@ export default {
                 ause: '',
                 department: '',
             },
+            addFormVisible:false,
             selecter: "", 
             temdata: "",
             pageTotal: 0,
             tableData: [],
-            idx: -1,        // 记录当前编辑行数，从0开始计
+            idx: -1,
+            flag:true,// 记录当前编辑行数，从0开始计
+            cnt:0,
+            row1:0,
         };
+    },
+    components:{
+        QRCode: QRCode
     },
     computed: {
         user() {
@@ -142,6 +161,27 @@ export default {
         this.getData();
     },
     methods: {
+        createMa(row){
+            this.row1=row;
+            this.createMa1();
+        },
+        createMa1(){
+            this.addFormVisible=true;
+            // console.log(this.flag)
+            // if(this.flag){
+            //     this.flag=false;
+            // }
+            this.useqrcode();
+        },
+        useqrcode(){
+            var canvas = document.getElementById('canvas')
+            console.log(canvas)
+            QRCode.toCanvas(canvas, "资产编号:"+this.tableData[this.row1].uid+"，"+"资产名称:"+this.tableData[this.row1].aname+","+"资产类别:"+this.tableData[this.row1].acname+","+"入库时间:"+this.tableData[this.row1].stime+"，"+"状态:"+this.tableData[this.row1].astate,
+                function (error){
+                    if (error) console.error(error)
+                    console.log('success!');
+            })
+        },
         async getData() {
             this.$apis.getAssets(this.query).then(res =>{
                 this.tableData = res.data.records;
