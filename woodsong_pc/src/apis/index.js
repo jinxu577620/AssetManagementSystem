@@ -17,9 +17,10 @@ apisContext.keys().forEach(api => {
     Object.assign(allApis, (apiModule.default || apiModule));
 });
 
+var baseUrl = 'http://127.0.0.1:8080/';
 
 let instance = axios.create({
-    baseURL: 'http://127.0.0.1:8080/',  // api 在 vue.config.js 中配置了代理地址，从而解决了跨域问题
+    baseURL: baseUrl,  // api 在 vue.config.js 中配置了代理地址，从而解决了跨域问题
     timeout: 1000
 })
 

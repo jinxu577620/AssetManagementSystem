@@ -22,7 +22,14 @@
                 <el-table-column prop="acid" label="资产分类编号" align="center" ></el-table-column>
                 <el-table-column prop="num" label="数量" align="center" ></el-table-column>
                 <el-table-column prop="price" label="价格" align="center" ></el-table-column>
-                <el-table-column prop="annex" label="附件" align="center" ></el-table-column>
+                <el-table-column prop="annex" label="附件" align="center" >
+                    <template slot-scope="scope">
+                        <p v-if="scope.row.annex != ''">
+                            <el-button size="small" type="primary" @click="handleDownload(scope.row.annex)">下载</el-button>
+                        </p>
+                    </template>
+
+                </el-table-column>
                 <el-table-column prop="supplier" label="供应商" align="center" ></el-table-column>
                 <el-table-column prop="evaluate" label="评价" align="center" ></el-table-column>
                 
@@ -53,12 +60,6 @@
                     </template>
                 </el-table-column>
             </el-table>
-            
-
-
-
-
-
             <div class="pagination">
                 <el-pagination
                         background
@@ -98,6 +99,7 @@
         name: 'accept',
         data() {
             return {
+                baseUrl: 'http://127.0.0.1:8080/',
                 query: {
                     aname:'',
                     pageIndex: 1,
@@ -180,6 +182,10 @@
                 }).catch(err =>{
                     this.$message.error(err);
                 });
+            },
+            handleDownload(annex) {
+                let token = this.$store.state.userInfo.token;
+                window.location.href = this.baseUrl + '/accept-request/download' +'?name=' + annex + '&t=' + token;
             },
             // 同意操作
             async handleAgree(index, row) {

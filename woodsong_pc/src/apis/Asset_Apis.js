@@ -23,11 +23,15 @@ const Asset_Apis = {
         method:"post",
         url:'/use-request/get'
     },
+    //审批
     dicided:{
         method:"post",
         url:'/use-request/dicide'
     },
-    //审批
-    
+    download:{
+        method:"get",
+        url:'/accept-request/download'
+
+    },
 }
 export default Asset_Apis

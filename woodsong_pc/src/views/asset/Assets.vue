@@ -67,7 +67,13 @@
                 <el-table-column prop="etime" label="报废时间" width="100" align="center"></el-table-column>
                 <el-table-column prop="uid" label="所属用户编号" width="100" align="center"></el-table-column>
                 <el-table-column prop="department" label="所属部门" width="150" align="center"></el-table-column>
-                <el-table-column prop="annex" label="附件" width="150" align="center"></el-table-column>
+                <el-table-column prop="annex" label="附件" width="150" align="center">
+                    <template slot-scope="scope">
+                        <p v-if="scope.row.annex != ''">
+                            <el-button size="small" type="primary" @click="handleDownload(scope.row.annex)">下载</el-button>
+                        </p>
+                    </template>
+                </el-table-column>
                 <el-table-column prop="supplier" label="供应商" width="150" align="center"></el-table-column>
                 <el-table-column prop="evaluate" label="评价" width="150" align="center"></el-table-column>
                 <el-table-column prop="manufacturer" label="生产厂家" width="150" align="center"></el-table-column>
@@ -100,6 +106,7 @@ export default {
     name: 'AssetList',
     data() {
         return {
+            baseUrl: 'http://127.0.0.1:8080/',
             options: [{
                 value: 'aname',
                 label: '资产名称'
@@ -241,6 +248,17 @@ export default {
             this.query.uid = "";
             this.query.department = "";
             this.query.astate = "";
+        },
+        handleDownload(annex) {
+
+            let token = this.$store.state.userInfo.token;
+            window.location.href = this.baseUrl + '/accept-request/download' +'?name=' + annex + '&t=' + token;
+            
+            
+            // this.$apis.download({name:annex}).then(res =>{
+            // }).catch(err =>{
+            //     this.$message.error(err);
+            // });  
         },
         // 分页导航
         handlePageChange(val) {

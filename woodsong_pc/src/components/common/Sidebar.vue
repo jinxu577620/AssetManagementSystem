@@ -142,10 +142,6 @@ export default {
                         },
                         {
                             index: '/shippedOrders',
-                            title: '资产报废预警'
-                        },
-                        {
-                            index: '/shippedOrders',
                             title: '资产报废'
                         }
                     ]
