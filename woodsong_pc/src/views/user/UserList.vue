@@ -11,6 +11,7 @@
             <div class="handle-box">
                 <el-input v-model="query.uid" placeholder="工号" class="handle-input mr10"></el-input>
                 <el-button type="primary" icon="el-icon-search" @click="handleSearch">搜索</el-button>
+                <el-button type="primary" icon="el-icon-edit"  @click="handleAdd">新增</el-button>
             </div>
             <el-table
                     :data="tableData"
@@ -237,6 +238,8 @@
                 this.getData();
                 this.query.uid=""
 
+            },handleAdd(){
+
             },
             // 分页导航
             handlePageChange(val) {
@@ -249,6 +252,7 @@
                 this.form = row;
                 this.editVisible = true;
             },
+
             // 保存修改或添加
             async saveEdit(formName) {
                 this.$refs[formName].validate(async (valid) => {
